@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { slugify } from "@/lib/slug";
+import { uploadAffiche } from "@/lib/upload";
 import { LIBELLE_TYPE, type TypeTournoi } from "@/lib/types";
 
 const TYPES: TypeTournoi[] = ["4x4", "3x3", "mixte", "beach_camp", "autre"];
@@ -17,10 +18,18 @@ export function CreateTournoi() {
   const [type, setType] = useState<TypeTournoi>("4x4");
   const [date, setDate] = useState("");
   const [tarif, setTarif] = useState("10");
+  const [affiche, setAffiche] = useState<File | null>(null);
+  const [apercu, setApercu] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const slugFinal = slugTouche ? slug : slugify(nom);
+
+  function choisirImage(f: File | null) {
+    setAffiche(f);
+    setApercu(f ? URL.createObjectURL(f) : null);
+  }
 
   async function creer() {
     setErreur(null);
@@ -54,23 +63,17 @@ export function CreateTournoi() {
       return;
     }
 
-    // Pré-remplir les frais association par défaut
-    await supabase.from("frais_association").insert([
-      {
-        tournoi_id: data.id,
-        description: "Assurance camion",
-        montant: 0,
-        fonction: "Transport / stockage du matériel",
-        position: 1,
-      },
-      {
-        tournoi_id: data.id,
-        description: "Assurance responsabilité civile",
-        montant: 0,
-        fonction: "Protection des participants",
-        position: 2,
-      },
-    ]);
+    // Affiche (optionnelle)
+    if (affiche) {
+      try {
+        const url = await uploadAffiche(supabase, data.id, affiche);
+        await supabase.from("tournois").update({ image_url: url }).eq("id", data.id);
+      } catch {
+        // Le tournoi est créé ; l'affiche pourra être ajoutée depuis le tableau de bord.
+      }
+    }
+
+    // Aucun frais / achat pré-rempli : les tableaux démarrent vides.
 
     setLoading(false);
     setOpen(false);
@@ -80,20 +83,20 @@ export function CreateTournoi() {
 
   return (
     <>
-      <button className="btn-accent" onClick={() => setOpen(true)}>
+      <button className="btn-primary" onClick={() => setOpen(true)}>
         + Nouveau tournoi
       </button>
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-6"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 backdrop-blur-sm sm:items-center sm:p-6"
           onClick={() => setOpen(false)}
         >
           <div
-            className="card w-full max-w-lg p-6 sm:rounded-2xl"
+            className="card max-h-[92vh] w-full max-w-lg overflow-y-auto p-6 shadow-flotte sm:rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-5 font-display text-xl font-700 text-ecume">
+            <h2 className="display mb-5 text-xl font-semibold text-encre">
               Nouveau tournoi
             </h2>
             <div className="space-y-4">
@@ -106,6 +109,40 @@ export function CreateTournoi() {
                   onChange={(e) => setNom(e.target.value)}
                 />
               </div>
+
+              {/* Affiche */}
+              <div>
+                <label className="label">Affiche du tournoi (optionnel)</label>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => choisirImage(e.target.files?.[0] ?? null)}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="flex w-full items-center gap-4 rounded-xl border border-dashed border-ligne bg-nuage/60 p-3 text-left transition hover:bg-nuage"
+                >
+                  {apercu ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={apercu}
+                      alt="Aperçu de l'affiche"
+                      className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-blanc text-ardoise">
+                      +
+                    </span>
+                  )}
+                  <span className="text-sm text-ardoise">
+                    {affiche ? affiche.name : "Choisir une image (JPG, PNG…)"}
+                  </span>
+                </button>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="label">Format</label>
@@ -155,11 +192,12 @@ export function CreateTournoi() {
                   />
                 </div>
               </div>
-              <p className="text-xs text-brume/70">
-                URL publique : <span className="text-lagon">/tournoi/{slugFinal || "…"}</span>
+              <p className="text-xs text-ardoise">
+                URL publique :{" "}
+                <span className="text-encre">/tournoi/{slugFinal || "…"}</span>
               </p>
               {erreur && (
-                <p className="rounded-xl bg-nonpaye/10 px-4 py-2.5 text-sm text-nonpaye ring-1 ring-nonpaye/30">
+                <p className="rounded-xl border border-nonpaye/30 bg-nonpaye/5 px-4 py-2.5 text-sm text-nonpaye">
                   {erreur}
                 </p>
               )}
