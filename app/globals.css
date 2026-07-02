@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(34, 184, 207, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(255, 122, 60, 0.08), transparent 55%),
+    #081422;
+  color: #f4faff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ligne d'horizon décorative (signature "océan") */
+.horizon::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 184, 207, 0.5),
+    transparent
+  );
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-lagon text-abysse hover:bg-lagonClair shadow-lueur;
+  }
+  .btn-accent {
+    @apply btn bg-corail text-abysse hover:bg-corailClair;
+  }
+  .btn-ghost {
+    @apply btn border border-bordure bg-recif/40 text-ecume hover:bg-recif2;
+  }
+  .btn-danger {
+    @apply btn bg-nonpaye/90 text-white hover:bg-nonpaye;
+  }
+  .card {
+    @apply rounded-2xl border border-bordure bg-recif/70 shadow-carte backdrop-blur;
+  }
+  .input {
+    @apply w-full rounded-xl border border-bordure bg-abysse/60 px-3.5 py-2.5 text-ecume placeholder-brume/60 outline-none transition focus:border-lagon focus:ring-2 focus:ring-lagon/30;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-brume;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+/* ---- Impression PDF (Ctrl/Cmd + P sur la page bilan) ---- */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .card {
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}

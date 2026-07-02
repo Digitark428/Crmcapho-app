@@ -1,0 +1,2669 @@
+[
+  {
+    "nom": "4VS4 MIXTE 16 FEVRIER",
+    "nb_equipes": 29,
+    "somme_montants_equipes": 912.0,
+    "finances": {
+      "inscriptions": 912.0,
+      "depense_buvette": 500.0,
+      "rentre_buvette": null,
+      "total_achat": 200.0,
+      "total_frais": 600.0,
+      "benefice": -388.0
+    },
+    "achats_divers": [
+      {
+        "description": "Vidéaste",
+        "montant": 200.0
+      },
+      {
+        "description": "Repas Staff",
+        "montant": null
+      },
+      {
+        "description": "Aprés tournoi Apero",
+        "montant": null
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 600.0,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "TEAM VALOU",
+        "montant": 32.0
+      },
+      {
+        "nom": "KABOMARD",
+        "montant": 24.0
+      },
+      {
+        "nom": "L'AIGLES ET SES MOUETTES",
+        "montant": 24.0
+      },
+      {
+        "nom": "DEPUIS LE TEMPS QUE J'ATTENDAIS ÇA",
+        "montant": 32.0
+      },
+      {
+        "nom": "BEACH BEACH ON FIRE",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES TIPIOCOCOS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES SAUTÉ MINES",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE RETOUR DE TONI",
+        "montant": 32.0
+      },
+      {
+        "nom": "ROUGAIL DAKATINE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES TCHOUPAPENSES",
+        "montant": 32.0
+      },
+      {
+        "nom": "TOUT SUR LE ROUGE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ON EST PAS DES MANGUES A TERRE",
+        "montant": 48.0
+      },
+      {
+        "nom": "TEAM CHARLES",
+        "montant": 32.0
+      },
+      {
+        "nom": "team paye pas",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES HOMARDS ET FRED",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES SPORTIFS DU DIMANCHE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TO THE au fond a gauche",
+        "montant": 32.0
+      },
+      {
+        "nom": "#UNPEUPRESVOLLEYBALL",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES AIGLES TOUS TOUS",
+        "montant": 40.0
+      },
+      {
+        "nom": "TEAM QUENTIN METISSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ENCHANTIER JE MA PELLETEUSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "FC MOINS 1M80",
+        "montant": 32.0
+      },
+      {
+        "nom": "les escrevisse de cap homard",
+        "montant": 32.0
+      },
+      {
+        "nom": "TORTUE NIGGAZ",
+        "montant": 32.0
+      },
+      {
+        "nom": "HOMARD GOD",
+        "montant": 32.0
+      },
+      {
+        "nom": "DE DERNIERE MINUTES",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES ROULOUSORS",
+        "montant": 32.0
+      },
+      {
+        "nom": "BRICE TES MORT!",
+        "montant": 32.0
+      },
+      {
+        "nom": "Les choupettes",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "3VS3 MIXTE 16 MARS",
+    "nb_equipes": 42,
+    "somme_montants_equipes": 1000.0,
+    "finances": {
+      "inscriptions": 1000.0,
+      "depense_buvette": null,
+      "rentre_buvette": 136.0,
+      "total_achat": 220.67,
+      "total_frais": 915.0,
+      "benefice": 0.0
+    },
+    "achats_divers": [
+      {
+        "description": "Medailles",
+        "montant": null
+      },
+      {
+        "description": "Repas Staff",
+        "montant": null
+      },
+      {
+        "description": "Aprés tournoi Apero",
+        "montant": null
+      },
+      {
+        "description": "Dette Juju",
+        "montant": null
+      },
+      {
+        "description": "VIDEASTE",
+        "montant": null
+      },
+      {
+        "description": "KEVIN ESSENCE",
+        "montant": 25.0
+      },
+      {
+        "description": "KEVIN DIVERS",
+        "montant": 25.0
+      },
+      {
+        "description": "KEVIN AVANCE BOISSON",
+        "montant": 50.0
+      },
+      {
+        "description": "Sac poubelles ,piles, gobelet",
+        "montant": 9.66
+      },
+      {
+        "description": "petit dej payant",
+        "montant": 39.67
+      },
+      {
+        "description": "RUban",
+        "montant": 6.5
+      },
+      {
+        "description": "gobelet + baguette",
+        "montant": 24.8
+      },
+      {
+        "description": "sandiwch",
+        "montant": 31.14
+      },
+      {
+        "description": "CB",
+        "montant": 8.9
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 160.0,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 600.0,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": 75.0,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": 80.0,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "LES SMARTIES",
+        "montant": 24.0
+      },
+      {
+        "nom": "O IDEES",
+        "montant": 24.0
+      },
+      {
+        "nom": "3.2.1 REQUIN",
+        "montant": 24.0
+      },
+      {
+        "nom": "6 PARTOUT",
+        "montant": 16.0
+      },
+      {
+        "nom": "LA TEAM K TA PEUR - 2",
+        "montant": 16.0
+      },
+      {
+        "nom": "LA TABLE D'ARTHUR",
+        "montant": 16.0
+      },
+      {
+        "nom": "TTB",
+        "montant": 24.0
+      },
+      {
+        "nom": "VODKA ANNANAS - 2 EUROS + 8 EUROS",
+        "montant": 24.0
+      },
+      {
+        "nom": "ESCANOR - CENTRAL",
+        "montant": 16.0
+      },
+      {
+        "nom": "LE RETOUR DU ROI",
+        "montant": 24.0
+      },
+      {
+        "nom": "ON MONTE EN DEMIE",
+        "montant": 16.0
+      },
+      {
+        "nom": "TEAM LE DUFF",
+        "montant": 24.0
+      },
+      {
+        "nom": "LOS GRINGOS - CENTRAL",
+        "montant": 24.0
+      },
+      {
+        "nom": "BALLES PERDUES - 6 EUROS",
+        "montant": 24.0
+      },
+      {
+        "nom": "MASTEWAN -",
+        "montant": 24.0
+      },
+      {
+        "nom": "NOA ET LES AUTRES - 2",
+        "montant": 24.0
+      },
+      {
+        "nom": "CHIKCHIK",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES BRAS CASSÉ",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM BAGARRE",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES VISIONNAIRES + 8EURO",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM CHIEN MAIGRE",
+        "montant": 24.0
+      },
+      {
+        "nom": "MATHIS PRIME",
+        "montant": 16.0
+      },
+      {
+        "nom": "KABOMARD - 2",
+        "montant": 24.0
+      },
+      {
+        "nom": "3 BEACHEUR - 3",
+        "montant": 24.0
+      },
+      {
+        "nom": "FAIT VRILLER - 4 EUROS",
+        "montant": 16.0
+      },
+      {
+        "nom": "ZOMBILENIUM",
+        "montant": 16.0
+      },
+      {
+        "nom": "PASSEUR TITULAIRE",
+        "montant": 24.0
+      },
+      {
+        "nom": "SAUCE AU GALETS",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES CROUSTIBAT",
+        "montant": 24.0
+      },
+      {
+        "nom": "2 GARS UNE FILLE",
+        "montant": 24.0
+      },
+      {
+        "nom": "JACQUELINE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ATTEND PAS PATRICK",
+        "montant": 24.0
+      },
+      {
+        "nom": "GABARRIVE",
+        "montant": 24.0
+      },
+      {
+        "nom": "3 GRAMMES",
+        "montant": 24.0
+      },
+      {
+        "nom": "SNCF - 2",
+        "montant": 24.0
+      },
+      {
+        "nom": "LE CHIEN LA VOLE MON BARQUETTE 6 EUROS",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES BRONZÉ - 4 EUROS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES RANDOMS",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM PAS PAYE",
+        "montant": 24.0
+      },
+      {
+        "nom": "POP UP BDP",
+        "montant": 50.0
+      },
+      {
+        "nom": "POP UP GAYA",
+        "montant": 35.0
+      },
+      {
+        "nom": "POP UP GARDIENNA",
+        "montant": 35.0
+      }
+    ]
+  },
+  {
+    "nom": "4VS4 MIXTE  11 MAI",
+    "nb_equipes": 34,
+    "somme_montants_equipes": 1016.0,
+    "finances": {
+      "inscriptions": 1512.0,
+      "depense_buvette": null,
+      "rentre_buvette": 414.0,
+      "total_achat": 438.0,
+      "total_frais": 992.0,
+      "benefice": 496.0
+    },
+    "achats_divers": [
+      {
+        "description": "Aprés tournoi Apero",
+        "montant": 30.0
+      },
+      {
+        "description": "COURSE Kevin ( Avance)",
+        "montant": 361.0
+      },
+      {
+        "description": "Glacon",
+        "montant": 7.0
+      },
+      {
+        "description": "Protege feuille",
+        "montant": 10.0
+      },
+      {
+        "description": "Course du matin",
+        "montant": 30.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 242.0,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 600.0,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": 150.0,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "4 3 2 1 REQUIN - MANQUE ENZO",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES SAUTÉ MINE",
+        "montant": 16.0
+      },
+      {
+        "nom": "LA NASA",
+        "montant": 32.0
+      },
+      {
+        "nom": "CREME SOLAIRE - TERRAIN 4",
+        "montant": 32.0
+      },
+      {
+        "nom": "KEVIN ET LES MINIMOYS - Terrain 1",
+        "montant": 32.0
+      },
+      {
+        "nom": "TRALALA",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES TOUTOU DE MARIE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LOS PEGUES",
+        "montant": 24.0
+      },
+      {
+        "nom": "LA CHARETTE ET SES BOEUFS",
+        "montant": 32.0
+      },
+      {
+        "nom": "PINCE MI SMASH MOI",
+        "montant": 32.0
+      },
+      {
+        "nom": "TU VA NOUS MANQUER MIMI -",
+        "montant": 32.0
+      },
+      {
+        "nom": "CHUPA",
+        "montant": 32.0
+      },
+      {
+        "nom": "MILO PASSEUR 3000 - MANQUE 2 - TERRAIN 4",
+        "montant": 24.0
+      },
+      {
+        "nom": "LA MINETTE ET SES MINETS",
+        "montant": 32.0
+      },
+      {
+        "nom": "I LOVE SKINNY SURPRISE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES SEGPA  - TERRAIN 4",
+        "montant": 40.0
+      },
+      {
+        "nom": "YOMARDGOD",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA TEAM TEAM",
+        "montant": 32.0
+      },
+      {
+        "nom": "VOLLEY & FEMMES",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOMBOCLAT",
+        "montant": 32.0
+      },
+      {
+        "nom": "TUNG TUNG TUNG SAHUR",
+        "montant": 32.0
+      },
+      {
+        "nom": "Les 4 PARALYMPIQUES - TERRAIN 4",
+        "montant": 32.0
+      },
+      {
+        "nom": "HOMARD HEUUUUU",
+        "montant": 32.0
+      },
+      {
+        "nom": "RACHEL A LA PASSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM SOUCOUPE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE PETIT NOUS SURVEILLE",
+        "montant": 32.0
+      },
+      {
+        "nom": "SUR LE FIL",
+        "montant": 32.0
+      },
+      {
+        "nom": "TOUT SUR LE ROUGE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA RAFALE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES 4 MERGUEZ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TOINIQUETAM HAÏR",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES BEACHEURS",
+        "montant": 32.0
+      },
+      {
+        "nom": "WOUAF WOAUF LE MEC A CAMILLE",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOB L'EPONGE",
+        "montant": 16.0
+      }
+    ]
+  },
+  {
+    "nom": "3VS3 OPEN 22 JUIN",
+    "nb_equipes": 30,
+    "somme_montants_equipes": 712.0,
+    "finances": {
+      "inscriptions": 1384.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 230.0,
+      "total_frais": 655.0,
+      "benefice": 499.0
+    },
+    "achats_divers": [
+      {
+        "description": "REMBOURSEMENT KEVIN DEMARREUR",
+        "montant": 150.0
+      },
+      {
+        "description": "REMBOURSEMENT BOISSON KEVIN",
+        "montant": 80.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 180.0,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 400.0,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": 75.0,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "SARCIVES MANIOC",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES 3 FOIS MIEUX",
+        "montant": 24.0
+      },
+      {
+        "nom": "VOIN VOIN VOIN",
+        "montant": 24.0
+      },
+      {
+        "nom": "ÇA BOUDE PAS ICI",
+        "montant": 24.0
+      },
+      {
+        "nom": "SMASH THAT BEACH",
+        "montant": 24.0
+      },
+      {
+        "nom": "MAISON BLANCHE",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES BAGUETTES",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES TUNDERS",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES MALAGACHES",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES NEUILLES DU VOLLEY",
+        "montant": 24.0
+      },
+      {
+        "nom": "TIC TAC TOE",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM FE VRILLER",
+        "montant": 24.0
+      },
+      {
+        "nom": "LA MOUKATE LO CHIEN",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES POULET LE FRIT",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM MARIE",
+        "montant": 24.0
+      },
+      {
+        "nom": "LE TROIS TOIS",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM FRED",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM PRÉSIDENT",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES TCHOUPAPENSE",
+        "montant": 24.0
+      },
+      {
+        "nom": "40 GT",
+        "montant": 24.0
+      },
+      {
+        "nom": "DAKA TEAM",
+        "montant": 24.0
+      },
+      {
+        "nom": "YERO ET SES ZÉROS",
+        "montant": 24.0
+      },
+      {
+        "nom": "EVA PRIME",
+        "montant": 24.0
+      },
+      {
+        "nom": "JAI PRIS TA COPINE ANTCHOUAY",
+        "montant": 24.0
+      },
+      {
+        "nom": "CHIEN MAIGRE",
+        "montant": 24.0
+      },
+      {
+        "nom": "BOMBOCLAT",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM ANTONIO",
+        "montant": 24.0
+      },
+      {
+        "nom": "TEAM MANASA",
+        "montant": 24.0
+      },
+      {
+        "nom": "FILET MIGNON",
+        "montant": 24.0
+      },
+      {
+        "nom": "LE STAGIAIRE ET LE DESCO",
+        "montant": 24.0
+      }
+    ]
+  },
+  {
+    "nom": "4VS4 27 JUILLET",
+    "nb_equipes": 40,
+    "somme_montants_equipes": 1224.0,
+    "finances": {
+      "inscriptions": 1480.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 400.0,
+      "total_frais": 1035.0,
+      "benefice": 45.0
+    },
+    "achats_divers": [
+      {
+        "description": "JUJU buvette",
+        "montant": 160.0
+      },
+      {
+        "description": "JUJU avant",
+        "montant": 80.0
+      },
+      {
+        "description": "Securité",
+        "montant": 160.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 360.0,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 600.0,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": 75.0,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "HALLUX CASSÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM CHAUTARD",
+        "montant": 32.0
+      },
+      {
+        "nom": "ZAVIRONS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES COCOTTES",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOMBOCLAT",
+        "montant": 32.0
+      },
+      {
+        "nom": "UNE PAS DEUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES REKINS DE BOUCAN",
+        "montant": 32.0
+      },
+      {
+        "nom": "KASS ET SES PETASSES",
+        "montant": 16.0
+      },
+      {
+        "nom": "KISS CAM COLD PLAY",
+        "montant": 16.0
+      },
+      {
+        "nom": "ALIBABA ET LES 40 CHEVEUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "ZOZO ET SES LOULOU",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM FOR MEOK",
+        "montant": 32.0
+      },
+      {
+        "nom": "APERO BEACH",
+        "montant": 32.0
+      },
+      {
+        "nom": "ET C'EST OK",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA TAM CFU ET MATHIS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES CRABES SABLÉS",
+        "montant": 32.0
+      },
+      {
+        "nom": "IPOPO SVP",
+        "montant": 32.0
+      },
+      {
+        "nom": "FILET MIGNON",
+        "montant": 32.0
+      },
+      {
+        "nom": "ASSON BATIMENTS",
+        "montant": 32.0
+      },
+      {
+        "nom": "COU TUPIK",
+        "montant": 32.0
+      },
+      {
+        "nom": "TCHOUPAPENSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "GROS CERVEAU",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM PETCHY",
+        "montant": 32.0
+      },
+      {
+        "nom": "ICH AN ICH AN",
+        "montant": 32.0
+      },
+      {
+        "nom": "BEACH PLEASE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LOVE ET COMPAGNIE",
+        "montant": 32.0
+      },
+      {
+        "nom": "RECEP TETE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM ELIO",
+        "montant": 16.0
+      },
+      {
+        "nom": "FIBULA",
+        "montant": 32.0
+      },
+      {
+        "nom": "FIRE FOX",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE PETIT BOUT QUI DEPASSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "CHACHA",
+        "montant": 32.0
+      },
+      {
+        "nom": "AIR FRANCE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES FRAPPÉS",
+        "montant": 32.0
+      },
+      {
+        "nom": "TI MAX MATHÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TCHOPPEUR ARRÊTE DE CHOPER",
+        "montant": 24.0
+      },
+      {
+        "nom": "SHATTA TEAM",
+        "montant": 32.0
+      },
+      {
+        "nom": "ANNA ET SES LANGOUSTINES",
+        "montant": 32.0
+      },
+      {
+        "nom": "SOYONS FOUS",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM FUN",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "4VS4 27 JUILLET",
+    "nb_equipes": 29,
+    "somme_montants_equipes": 920.0,
+    "finances": {
+      "inscriptions": 1617.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 870.0,
+      "total_frais": 0.0,
+      "benefice": 747.0
+    },
+    "achats_divers": [
+      {
+        "description": "JUJU buvette",
+        "montant": 100.0
+      },
+      {
+        "description": "JUJU avant",
+        "montant": null
+      },
+      {
+        "description": "Securité",
+        "montant": 140.0
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 480.0
+      },
+      {
+        "description": "Ballon Eric",
+        "montant": 150.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": null,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "THUNDERS",
+        "montant": 32.0
+      },
+      {
+        "nom": "APERO BEACH",
+        "montant": 32.0
+      },
+      {
+        "nom": "SANS RESEAU",
+        "montant": 32.0
+      },
+      {
+        "nom": "J'AI PRIS TA COPINE ANTCHOUAY",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES FOUFOU DE SOCHEAUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "ZOZO ET SES ZOUOU",
+        "montant": 32.0
+      },
+      {
+        "nom": "FC CHILL",
+        "montant": 32.0
+      },
+      {
+        "nom": "SANS PERMIS",
+        "montant": 32.0
+      },
+      {
+        "nom": "STRAP ET DOLIPRANE",
+        "montant": 32.0
+      },
+      {
+        "nom": "CONSOLENTE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM MAAF",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM TESSA",
+        "montant": 32.0
+      },
+      {
+        "nom": "POLE EMPLOIE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES THON TONIQUE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES LOUCHE DE LEO",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM AXEL BERIRI",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES BILLES DE SAINT SUCRÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM KLEIN",
+        "montant": 32.0
+      },
+      {
+        "nom": "SARDINE I BEK PAS",
+        "montant": 32.0
+      },
+      {
+        "nom": "BJKL",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES PETIT COCO",
+        "montant": 32.0
+      },
+      {
+        "nom": "TIC TAC BOUM ACE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE PORK",
+        "montant": 32.0
+      },
+      {
+        "nom": "YAV BOU",
+        "montant": 32.0
+      },
+      {
+        "nom": "On c'est trouver",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM QUENTIN",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM ELIO",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM PRESDIENT",
+        "montant": 24.0
+      },
+      {
+        "nom": "BEACH PLEASE",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "21 SEPTEMNBRE 2025",
+    "nb_equipes": 37,
+    "somme_montants_equipes": 1107.0,
+    "finances": {
+      "inscriptions": 1715.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 800.0,
+      "total_frais": 0.0,
+      "benefice": 915.0
+    },
+    "achats_divers": [
+      {
+        "description": "JUJU buvette",
+        "montant": null
+      },
+      {
+        "description": "JUJU avant",
+        "montant": null
+      },
+      {
+        "description": "Securité",
+        "montant": null
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 300.0
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 500.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": null,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "A NOU MEME LA FORCE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM BOUCHAREINE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ZIP SUR YVETTE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM APERO BEACH",
+        "montant": 32.0
+      },
+      {
+        "nom": "NOSY ET LES AUTRES",
+        "montant": 24.0
+      },
+      {
+        "nom": "DREAM TEAM - MANQUE 16",
+        "montant": 16.0
+      },
+      {
+        "nom": "LE GEANTS ET LES PETITS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE PROJET",
+        "montant": 32.0
+      },
+      {
+        "nom": "PAS PLUS HAUT QUE THIBAULT",
+        "montant": 32.0
+      },
+      {
+        "nom": "HOMARD SALÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "LE V TRIPLE R - MANQUE 8",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES MINETTE ET LES MINETS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES CRACOTTE DE LEXTREME",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES PEPETTES ET LA FOOTABALLEUSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "OBJECTIF DES FÊTES",
+        "montant": 32.0
+      },
+      {
+        "nom": "NATHAN AIRLINES A CAP HO",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES BRAS CASSÉ DE SAINT LEU",
+        "montant": 32.0
+      },
+      {
+        "nom": "L'EQUIPE L'EQUIPE",
+        "montant": 40.0
+      },
+      {
+        "nom": "L'ENFANT PRODIGE",
+        "montant": 16.0
+      },
+      {
+        "nom": "LOU ET LES AUTRES",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES DALLEUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "321 REQUIN + MATHIS ET NOA",
+        "montant": 32.0
+      },
+      {
+        "nom": "ANNA LA PLUS BELLE",
+        "montant": 33.0
+      },
+      {
+        "nom": "TIM DEMI AU CENTRE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TÊTE D'AFFICHE MYGYM",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA COLLOC ET SON INTRU",
+        "montant": 32.0
+      },
+      {
+        "nom": "TRISO DESSUS DE BLOC",
+        "montant": 8.0
+      },
+      {
+        "nom": "TORTUE NIGGAZ",
+        "montant": 40.0
+      },
+      {
+        "nom": "SI DIEU LE VEU",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES OPTIMISTES",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOMBA LATINA",
+        "montant": 16.0
+      },
+      {
+        "nom": "LES CHAVESSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "50/50",
+        "montant": 8.0
+      },
+      {
+        "nom": "LES INDESTRUCTIBLES",
+        "montant": 32.0
+      },
+      {
+        "nom": "MAGIK MIKE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM SCUM",
+        "montant": 32.0
+      },
+      {
+        "nom": "Bikini",
+        "montant": 50.0
+      }
+    ]
+  },
+  {
+    "nom": "23 Novembre 2025 4MAN",
+    "nb_equipes": 25,
+    "somme_montants_equipes": 634.0,
+    "finances": {
+      "inscriptions": 1354.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 700.0,
+      "total_frais": 0.0,
+      "benefice": 654.0
+    },
+    "achats_divers": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 350.0
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 350.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      },
+      {
+        "description": "PAIEMENT COACH MARKA",
+        "montant": null,
+        "fonction": "BEACH CAMP"
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": null,
+        "fonction": ""
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "karasuNON",
+        "montant": 28.0
+      },
+      {
+        "nom": "3 blancs et 1 noir",
+        "montant": 28.0
+      },
+      {
+        "nom": "D'jocolinis",
+        "montant": 28.0
+      },
+      {
+        "nom": "ISAAC TOUJOURS PLUS HAUT",
+        "montant": 28.0
+      },
+      {
+        "nom": "TEAM CONSTANT",
+        "montant": 28.0
+      },
+      {
+        "nom": "R2D2",
+        "montant": 28.0
+      },
+      {
+        "nom": "NOUVELLE ECOLE",
+        "montant": 28.0
+      },
+      {
+        "nom": "LES '4 GRAINES",
+        "montant": 28.0
+      },
+      {
+        "nom": "AUCUNE IDÉE",
+        "montant": 28.0
+      },
+      {
+        "nom": "TRIOFFENSIF",
+        "montant": 16.0
+      },
+      {
+        "nom": "TEAM CREMOS",
+        "montant": 16.0
+      },
+      {
+        "nom": "AIR FRANCE 1 euros julien",
+        "montant": 28.0
+      },
+      {
+        "nom": "BOMBOCLAT 2 euros valentin",
+        "montant": 28.0
+      },
+      {
+        "nom": "LES QUATRE PREDATEUR  ( MANSUE PAIEMENT ENTIER",
+        "montant": 28.0
+      },
+      {
+        "nom": "SAINT LOUIS ZOO (",
+        "montant": 16.0
+      },
+      {
+        "nom": "MORT DANS LE FILM MANQUE UN JOUEUR",
+        "montant": 28.0
+      },
+      {
+        "nom": "LES INGENIEURS",
+        "montant": 28.0
+      },
+      {
+        "nom": "IL MANQUE DEUX JOUEURS ( DOIT DONNER 6",
+        "montant": 28.0
+      },
+      {
+        "nom": "LUDODODO",
+        "montant": 0.0
+      },
+      {
+        "nom": "TEAM DUGAIN",
+        "montant": 28.0
+      },
+      {
+        "nom": "TEAM AFAG",
+        "montant": 28.0
+      },
+      {
+        "nom": "FAUX DE FAUX",
+        "montant": 28.0
+      },
+      {
+        "nom": "\"TEAM HYPOLITE \"\" PAS SUR \"\"\"",
+        "montant": 28.0
+      },
+      {
+        "nom": "aller fe careess a ou ( Deux euros )",
+        "montant": 28.0
+      },
+      {
+        "nom": "LES INCOVENIENTS",
+        "montant": 26.0
+      }
+    ]
+  },
+  {
+    "nom": "25-janv-26",
+    "nb_equipes": 32,
+    "somme_montants_equipes": 1008.0,
+    "finances": {
+      "inscriptions": 1608.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 1000.0,
+      "total_frais": 0.0,
+      "benefice": 608.0
+    },
+    "achats_divers": [
+      {
+        "description": "Titi RCO",
+        "montant": 200.0
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 400.0
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": 150.0
+      },
+      {
+        "description": "Divers",
+        "montant": 250.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "TEAM ELIO",
+        "montant": 24.0
+      },
+      {
+        "nom": "JOWEL",
+        "montant": 32.0
+      },
+      {
+        "nom": "SARA DEL CAP HO",
+        "montant": 24.0
+      },
+      {
+        "nom": "VANILLE 3 CHOCOLATS",
+        "montant": 32.0
+      },
+      {
+        "nom": "JEAN CLANCHE",
+        "montant": 32.0
+      },
+      {
+        "nom": "IMPROBABLE",
+        "montant": 32.0
+      },
+      {
+        "nom": "MAISON BLANCHE PRIME",
+        "montant": 32.0
+      },
+      {
+        "nom": "AICE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ON EST PAS NUL C'EST LE VENT manque 24",
+        "montant": 32.0
+      },
+      {
+        "nom": "AMERICAN POULET BRASIL",
+        "montant": 32.0
+      },
+      {
+        "nom": "A NOUS MEME LA FORCE 4 euros romain",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES MANGEURS DE SABLES",
+        "montant": 32.0
+      },
+      {
+        "nom": "RASENGAN",
+        "montant": 32.0
+      },
+      {
+        "nom": "CROQUE MOI",
+        "montant": 32.0
+      },
+      {
+        "nom": "MAXIME TITU",
+        "montant": 32.0
+      },
+      {
+        "nom": "SURIMIX",
+        "montant": 32.0
+      },
+      {
+        "nom": "2 BLACK AND 2 WHITE",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOSS LADYYYYYY",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES SEXE SONT D'ASSAUT",
+        "montant": 32.0
+      },
+      {
+        "nom": "CLAUDETTE ET SES GARCONS",
+        "montant": 32.0
+      },
+      {
+        "nom": "KD COLE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TACOTACO",
+        "montant": 32.0
+      },
+      {
+        "nom": "GALINETTE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA OSTIA",
+        "montant": 32.0
+      },
+      {
+        "nom": "EN MODE MIGNON",
+        "montant": 32.0
+      },
+      {
+        "nom": "VOLCAN LA PETÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "ALEXI ET SES DROLES DAMES",
+        "montant": 32.0
+      },
+      {
+        "nom": "DERNIERE MINUTE",
+        "montant": 32.0
+      },
+      {
+        "nom": "CHINESE GANG",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM CLOCLO",
+        "montant": 32.0
+      },
+      {
+        "nom": "PAS DE BEACH SANS FEU",
+        "montant": 32.0
+      },
+      {
+        "nom": "ARTHUR JOELLLLL",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "01-mars-26",
+    "nb_equipes": 36,
+    "somme_montants_equipes": 1024.0,
+    "finances": {
+      "inscriptions": 1656.0,
+      "depense_buvette": 160.0,
+      "rentre_buvette": null,
+      "total_achat": 975.0,
+      "total_frais": 0.0,
+      "benefice": 521.0
+    },
+    "achats_divers": [
+      {
+        "description": "Revision Camion",
+        "montant": 200.0
+      },
+      {
+        "description": "DECOUVERT",
+        "montant": 160.0
+      },
+      {
+        "description": "Titi RCO",
+        "montant": 200.0
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 150.0
+      },
+      {
+        "description": "Videaste",
+        "montant": 175.0
+      },
+      {
+        "description": "Divers",
+        "montant": 10.0
+      },
+      {
+        "description": "Elio glacon etc",
+        "montant": 25.0
+      },
+      {
+        "description": "Biere fin",
+        "montant": 20.0
+      },
+      {
+        "description": "Maco Kev",
+        "montant": 20.0
+      },
+      {
+        "description": "Repas midi",
+        "montant": 15.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "LES CHOUCHOU PRIM",
+        "montant": 32.0
+      },
+      {
+        "nom": "QLL QUE LA LOOSE - MANQUE 2 - mail envoyé",
+        "montant": 16.0
+      },
+      {
+        "nom": "ZORA ZOREIL",
+        "montant": 32.0
+      },
+      {
+        "nom": "ENTRE DEUX BONNE MAIN - MANQUE DEUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "SMASHSMALLOW - MA,NQUE 1 EUROS",
+        "montant": 32.0
+      },
+      {
+        "nom": "MET CASQUE - Manque deux envoyé",
+        "montant": 16.0
+      },
+      {
+        "nom": "TEAM CREMOS - QUENTIN  envoyé",
+        "montant": 8.0
+      },
+      {
+        "nom": "KARASOUNOUN",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES AGITÉ  DU FILET MIGNON",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES 4 FANTASTIQUE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES RAZMOKET",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM ELIO",
+        "montant": 16.0
+      },
+      {
+        "nom": "BEACH PLEASE",
+        "montant": 32.0
+      },
+      {
+        "nom": "SHARK DEFENSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM PREMIER DEGRÉS - BOISSON OFFERT",
+        "montant": 32.0
+      },
+      {
+        "nom": "IPANEMA BEACH CLUB",
+        "montant": 24.0
+      },
+      {
+        "nom": "C'EST PAS NOUS C'EST LE SPOT",
+        "montant": 32.0
+      },
+      {
+        "nom": "DERIERE TOI MON COEUR",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES STEPHS",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES PITCHOUNE MOUSTACHU",
+        "montant": 24.0
+      },
+      {
+        "nom": "RCSG1 - MANQUE 1 ANNAEL",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES DODOS VOLANTS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES DISSIPÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "WINTEAM -",
+        "montant": 32.0
+      },
+      {
+        "nom": "TORTUE MALGACHE",
+        "montant": 32.0
+      },
+      {
+        "nom": "SKIBIDI CHIEN PRANKEUR",
+        "montant": 24.0
+      },
+      {
+        "nom": "A L'AIDE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES 4 HOMARDS",
+        "montant": 32.0
+      },
+      {
+        "nom": "AIR FRANCE",
+        "montant": 32.0
+      },
+      {
+        "nom": "SMASH OR PASS",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM BREDE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES PTI FILOU",
+        "montant": 32.0
+      },
+      {
+        "nom": "RCSG2",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES INDÉCIS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES CHOUBIDOUX",
+        "montant": 24.0
+      },
+      {
+        "nom": "BOUCANÉ POULET",
+        "montant": 24.0
+      }
+    ]
+  },
+  {
+    "nom": "28-mars-26",
+    "nb_equipes": 34,
+    "somme_montants_equipes": 1040.0,
+    "finances": {
+      "inscriptions": 1776.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 970.0,
+      "total_frais": 0.0,
+      "benefice": 806.0
+    },
+    "achats_divers": [
+      {
+        "description": "Titi",
+        "montant": 200.0
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 150.0
+      },
+      {
+        "description": "CAMERAMN",
+        "montant": 100.0
+      },
+      {
+        "description": "ELIOT ( avance)",
+        "montant": 30.0
+      },
+      {
+        "description": "decouvert",
+        "montant": 160.0
+      },
+      {
+        "description": "Achat repas + boisson STAFF Samedi et dimanche soir",
+        "montant": 160.0
+      },
+      {
+        "description": "Achat buvette",
+        "montant": 170.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "LA TANTE ET LES TONTONS ( TERRAINS 1 )",
+        "montant": 40.0
+      },
+      {
+        "nom": "MAELLE ET LES 3 NAINS",
+        "montant": 32.0
+      },
+      {
+        "nom": "ON REVIENDRA",
+        "montant": 24.0
+      },
+      {
+        "nom": "DERIERE TOI MON COEUR",
+        "montant": 32.0
+      },
+      {
+        "nom": "CROQUER LA POMMES",
+        "montant": 16.0
+      },
+      {
+        "nom": "LUCCAS TU FAIS QUOI",
+        "montant": 24.0
+      },
+      {
+        "nom": "INSHALAH BLOC EN 2",
+        "montant": 32.0
+      },
+      {
+        "nom": "CHOUCHOU PRIME",
+        "montant": 32.0
+      },
+      {
+        "nom": "BEACHKINEBOTTOM",
+        "montant": 32.0
+      },
+      {
+        "nom": "PETITPOIDS",
+        "montant": 32.0
+      },
+      {
+        "nom": "ARRETE MENTIR",
+        "montant": 32.0
+      },
+      {
+        "nom": "MINIPOUSS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA MIXI TEAM",
+        "montant": 16.0
+      },
+      {
+        "nom": "LA GLACIERE",
+        "montant": 32.0
+      },
+      {
+        "nom": "IPENEMA BEACH TEAM",
+        "montant": 32.0
+      },
+      {
+        "nom": "orea double COUCHE",
+        "montant": 32.0
+      },
+      {
+        "nom": "SMASHSMALLOW",
+        "montant": 32.0
+      },
+      {
+        "nom": "CHUCK",
+        "montant": 32.0
+      },
+      {
+        "nom": "NORRIS",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA CITÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "THE LAST ONE",
+        "montant": 32.0
+      },
+      {
+        "nom": "BAD GIRL",
+        "montant": 32.0
+      },
+      {
+        "nom": "SUSHISSON SEC",
+        "montant": 32.0
+      },
+      {
+        "nom": "NONO SOUS DEFRISSAGE",
+        "montant": 32.0
+      },
+      {
+        "nom": "HERTINE GARS FAIB",
+        "montant": 32.0
+      },
+      {
+        "nom": "HOMARD ET CHAMPAGNE",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOOMBOCLAT",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES MALGACHE MULTI COLORE",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES PLI DANZÉREUX",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM MASSON",
+        "montant": 24.0
+      },
+      {
+        "nom": "LES PRESQUE PROS",
+        "montant": 32.0
+      },
+      {
+        "nom": "AIR MAURITUS",
+        "montant": 32.0
+      },
+      {
+        "nom": "MILO PASSE A NANA",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES CALAMARS",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "01-mai-26",
+    "nb_equipes": 33,
+    "somme_montants_equipes": 1056.0,
+    "finances": {
+      "inscriptions": 1656.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": 400.0,
+      "total_frais": 0.0,
+      "benefice": 1256.0
+    },
+    "achats_divers": [
+      {
+        "description": "Achat buvette",
+        "montant": 120.0
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": 150.0
+      },
+      {
+        "description": "PETITBOOTJ",
+        "montant": 80.0
+      },
+      {
+        "description": "AIDE ELIOT",
+        "montant": 50.0
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "pa la ek ou mwin",
+        "montant": 32.0
+      },
+      {
+        "nom": "FRAISITA LA TANA",
+        "montant": 32.0
+      },
+      {
+        "nom": "GUIGUI PRIME",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA KIFFANCE",
+        "montant": 32.0
+      },
+      {
+        "nom": "reste branché",
+        "montant": 32.0
+      },
+      {
+        "nom": "winx",
+        "montant": 32.0
+      },
+      {
+        "nom": "au hasard",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES IMPROBLABLE",
+        "montant": 32.0
+      },
+      {
+        "nom": "RESTE BRANCHÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM AGNES",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES ZOUAVES",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES CREVETTES",
+        "montant": 32.0
+      },
+      {
+        "nom": "FILET GARNI",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM SAUSSEAU",
+        "montant": 32.0
+      },
+      {
+        "nom": "CABOTS SAUTEUR",
+        "montant": 32.0
+      },
+      {
+        "nom": "GRYFONDOR",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA FRAPPE",
+        "montant": 32.0
+      },
+      {
+        "nom": "OBJECTIF BOUGIE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TITI A LA PASSE",
+        "montant": 32.0
+      },
+      {
+        "nom": "ENTRE DE BONNE MAINS",
+        "montant": 32.0
+      },
+      {
+        "nom": "MOINEAU BLANC",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM DUBUISSON",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES IMPROVISÉ",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM MALLET",
+        "montant": 32.0
+      },
+      {
+        "nom": "BOUCAN EN PETARD",
+        "montant": 32.0
+      },
+      {
+        "nom": "TEAM KIARA",
+        "montant": 32.0
+      },
+      {
+        "nom": "LA BAGARRE",
+        "montant": 32.0
+      },
+      {
+        "nom": "TWO BOY ISA CUP",
+        "montant": 32.0
+      },
+      {
+        "nom": "DOUNG THUG",
+        "montant": 32.0
+      },
+      {
+        "nom": "TRIPLE MENACE AU FILET",
+        "montant": 32.0
+      },
+      {
+        "nom": "RUSKY PRIME",
+        "montant": 32.0
+      },
+      {
+        "nom": "LES PETITS CHATS",
+        "montant": 32.0
+      },
+      {
+        "nom": "MAMIE ET LES GOSS",
+        "montant": 32.0
+      }
+    ]
+  },
+  {
+    "nom": "01/05/2026 4MAN 4WOMAN",
+    "nb_equipes": 21,
+    "somme_montants_equipes": 840.0,
+    "finances": {
+      "inscriptions": 840.0,
+      "depense_buvette": null,
+      "rentre_buvette": null,
+      "total_achat": null,
+      "total_frais": 0.0,
+      "benefice": 840.0
+    },
+    "achats_divers": [
+      {
+        "description": "Achat buvette",
+        "montant": null
+      },
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null
+      },
+      {
+        "description": "PETITBOOTJ",
+        "montant": null
+      },
+      {
+        "description": "AIDE ELIOT",
+        "montant": null
+      }
+    ],
+    "frais_association": [
+      {
+        "description": "Assurance Camion + Civil",
+        "montant": null,
+        "fonction": "Camion + Protection participants"
+      },
+      {
+        "description": "Abonnement Canva",
+        "montant": null,
+        "fonction": "Création des visuel de l'association"
+      },
+      {
+        "description": "Abonnement Cap cut",
+        "montant": null,
+        "fonction": "Montage video pour communication"
+      },
+      {
+        "description": "Abonnement CHAT GPT",
+        "montant": null,
+        "fonction": "Analyse, creation de texte, conseil"
+      },
+      {
+        "description": "Abonnement KREA.AI",
+        "montant": null,
+        "fonction": "Outil IA pour visuel, photos."
+      },
+      {
+        "description": "Camion Crédit",
+        "montant": null,
+        "fonction": "Transport / stockage"
+      }
+    ],
+    "equipes": [
+      {
+        "nom": "Polo dans le sac à dos",
+        "montant": 40.0
+      },
+      {
+        "nom": "dave et ses poulets",
+        "montant": 40.0
+      },
+      {
+        "nom": "les bronzer font du beach",
+        "montant": 40.0
+      },
+      {
+        "nom": "tu sens l'aura",
+        "montant": 40.0
+      },
+      {
+        "nom": "backbakebouda",
+        "montant": 40.0
+      },
+      {
+        "nom": "entre debonne mains",
+        "montant": 40.0
+      },
+      {
+        "nom": "isac i vole",
+        "montant": 40.0
+      },
+      {
+        "nom": "1 noir 3 blanc",
+        "montant": 40.0
+      },
+      {
+        "nom": "les planteurs de choux",
+        "montant": 40.0
+      },
+      {
+        "nom": "LES DELIDELO",
+        "montant": 40.0
+      },
+      {
+        "nom": "OPÉE",
+        "montant": 40.0
+      },
+      {
+        "nom": "LBERTÉ EGALITÉ MBAPPE",
+        "montant": 40.0
+      },
+      {
+        "nom": "FC CHOMMEUR",
+        "montant": 40.0
+      },
+      {
+        "nom": "SAUTÉ MINES",
+        "montant": 40.0
+      },
+      {
+        "nom": "4 PTIT PIPES",
+        "montant": 40.0
+      },
+      {
+        "nom": "ACE ANGELS",
+        "montant": 40.0
+      },
+      {
+        "nom": "OREO MAX",
+        "montant": 40.0
+      },
+      {
+        "nom": "TEAM PROJET",
+        "montant": 40.0
+      },
+      {
+        "nom": "SALADE DE FRUITS",
+        "montant": 40.0
+      },
+      {
+        "nom": "TU FAUTES TU TWERK",
+        "montant": 40.0
+      },
+      {
+        "nom": "LES POUFIASSES",
+        "montant": 40.0
+      }
+    ]
+  }
+]
