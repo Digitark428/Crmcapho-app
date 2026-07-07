@@ -3,9 +3,12 @@
 Application web complète pour gérer les inscriptions et les finances des tournois
 de beach-volley de l'association **CAP HOMARD BEACH VOLLEY 974** (La Réunion).
 
-- **Inscriptions publiques** via un lien unique par tournoi (`/tournoi/<slug>`).
-- **Espace organisateur sécurisé** : tableau de bord, suivi des paiements par joueur,
-  bilan financier automatique, historique importé depuis votre fichier.
+- **Inscriptions publiques** via un **lien unique** (`/inscription`) : les joueurs y
+  voient tous les tournois ouverts, choisissent le leur, puis remplissent le formulaire
+  (contact obligatoire, engagements à cocher, paiement sur place).
+- **Espace organisateur sécurisé** : tableau de bord, affiche par tournoi, équipes
+  entièrement modifiables, suivi des paiements par joueur, bilan financier automatique,
+  archivage / suppression, historique importé depuis votre fichier.
 - **Formules financières reproduites à l'identique** de votre fichier Excel
   (validées sur les 13 tournois existants — 13/13 exacts).
 
@@ -38,19 +41,22 @@ cap-homard/
 ├── app/
 │   ├── page.tsx                      Page d'accueil publique
 │   ├── login/page.tsx                Connexion organisateur
-│   ├── tournoi/[slug]/page.tsx       Formulaire d'inscription public
+│   ├── inscription/page.tsx          🔗 Lien public unique — liste des tournois ouverts
+│   ├── tournoi/[slug]/page.tsx       Formulaire d'inscription d'un tournoi
 │   └── admin/
 │       ├── page.tsx                  Liste des tournois actifs
 │       ├── tournoi/[id]/page.tsx     Tableau de bord d'un tournoi
-│       └── historique/…              Tournois archivés (lecture seule)
-├── components/                       Composants React (formulaire, dashboard…)
+│       └── historique/…              Tournois archivés
+├── components/                       Composants React (formulaire, dashboard, affiche…)
 ├── lib/
 │   ├── finance.ts                    ⭐ Le module de calcul financier exact
 │   ├── export.ts                     Export Excel
+│   ├── upload.ts                     Envoi des affiches (Supabase Storage)
 │   └── supabase/                     Connexion Supabase (client + serveur)
 ├── supabase/
-│   ├── schema.sql                    ⭐ À exécuter en 1er : tables + sécurité
-│   └── seed.sql                      ⭐ À exécuter en 2nd : votre historique
+│   ├── schema.sql                    ⭐ Nouvelle install : tables + sécurité + stockage
+│   ├── migration_v2.sql              ⭐ Base existante : ajoute les nouveautés v2
+│   └── seed.sql                      ⭐ Votre historique (après schema.sql)
 ├── middleware.ts                     Protection de l'espace /admin
 └── .env.example                      Variables d'environnement à copier
 ```
@@ -73,11 +79,19 @@ cap-homard/
 Dans Supabase, ouvrez **SQL Editor → New query**, puis :
 
 1. Copiez-collez tout le contenu de **`supabase/schema.sql`** → **Run**.
-   (Crée les tables, la sécurité, et les fonctions d'inscription publique.)
+   (Crée les tables, la sécurité, le **bucket d'affiches** `tournoi-images`, et les
+   fonctions d'inscription publique.)
 2. Nouvelle requête : copiez-collez tout **`supabase/seed.sql`** → **Run**.
    (Importe vos 13 tournois, 422 équipes, achats et frais.)
 
 > L'ordre est important : **schema.sql** d'abord, **seed.sql** ensuite.
+
+> **Vous avez déjà une base en place ?** N'exécutez pas à nouveau schema.sql.
+> Lancez les migrations manquantes, dans l'ordre, comme nouvelles requêtes SQL
+> (chacune est idempotente et ne touche pas à vos données) :
+> **`supabase/migration_v2.sql`** (affiche, contact d'équipe, lien public, bucket)
+> puis **`supabase/migration_v3.sql`** (limite de places « complet » + suivi des
+> boissons). Si vous partez de schema.sql à jour, tout est déjà inclus.
 
 ### 3. Créer votre compte organisateur
 
@@ -124,19 +138,34 @@ Ouvrez [http://localhost:3000](http://localhost:3000).
 ## 🧭 Utilisation
 
 ### Créer un tournoi
-Espace organisateur → **Nouveau tournoi**. Choisissez le nom, le format, la date et
-le tarif par joueur (10 € par défaut). Deux lignes de frais récurrents (assurances)
-sont pré-remplies — modifiables.
+Espace organisateur → **Nouveau tournoi**. Choisissez le nom, une **affiche**
+(optionnelle), le format, la date, le tarif par joueur (10 € par défaut) et le
+**nombre de places** (équipes) — laissez vide pour illimité. Les tableaux
+financiers démarrent **vides**. Le nombre de places est modifiable à tout moment
+depuis l'onglet **Aperçu → Réglages**.
 
 ### Recueillir les inscriptions
-Onglet **Aperçu** → copiez le **lien d'inscription public** et partagez-le.
-Les équipes saisissent leur nom et de 4 à 8 joueurs ; elles apparaissent
-automatiquement dans l'onglet **Équipes**.
+Partagez le **lien unique** `/inscription`. Les joueurs y voient tous les tournois
+ouverts (avec leur affiche), choisissent le leur, renseignent leur **contact**
+(prénom, nom, téléphone), leur composition (4 à 8 joueurs), acceptent les
+**engagements** et valident. Le règlement se fait **sur place** (carte ou espèces).
+Quand le quota de places est atteint, la page affiche **« Tournoi complet »** et le
+bouton d'inscription n'est plus proposé (contrôle aussi garanti côté serveur, sans
+sur-réservation possible). Pour fermer un tournoi manuellement : **Aperçu →
+Réglages → Clôturer**.
 
-### Suivre les paiements
-Onglet **Équipes** : dépliez une équipe et cochez les joueurs qui ont payé.
-Le statut passe automatiquement de 🔴 Non payé → 🟠 Partiel → 🟢 Payé.
-Recherche par nom d'équipe ou de joueur, ajout / suppression d'équipe.
+### Suivre paiements, boissons et équipes
+Onglet **Équipes** : dépliez une équipe pour **tout modifier** — nom d'équipe,
+contact, noms des joueurs, ajout / suppression de joueurs. Pour chaque joueur, deux
+cases : **Payé** et **🥤 Boisson** (la boisson offerte a-t-elle été récupérée). Le
+statut de paiement passe de 🔴 → 🟠 → 🟢, et l'Aperçu récapitule les places
+occupées et le total des boissons récupérées. Recherche par équipe, joueur ou
+contact.
+
+### Archiver ou supprimer
+Depuis la liste des tournois (menu **…**) ou le tableau de bord : **Archiver**
+bascule le tournoi vers l'Historique ; **Supprimer** le retire définitivement
+(confirmation demandée). Dans l'Historique, vous pouvez **Désarchiver** ou supprimer.
 
 ### Suivre les finances
 Onglet **Finances** : saisissez la buvette (recette / dépense), ajoutez vos achats
@@ -165,5 +194,12 @@ d'origine (résultat attendu : `13/13 tournois reproduits à l'identique`).
 
 ## 🎨 Charte
 
-Thème sombre « océan » aux couleurs de l'association : bleu lagon turquoise,
-accent corail/orange homard, fond abysse. Responsive et pensé mobile d'abord.
+Direction artistique **monochrome premium**, inspirée de l'univers Apple / Notion /
+Linear : noir profond, blanc, gris anthracite. Interface épurée, moderne, sportive
+et professionnelle. Les couleurs ne servent qu'aux **statuts de paiement** (vert /
+orange / rouge, façon couleurs système). L'affiche du tournoi est fortement mise en
+avant sur la page publique pour une immersion immédiate. Entièrement responsive,
+pensé mobile d'abord.
+
+Tokens dans `tailwind.config.ts` : `noir`, `encre`, `ardoise`, `ligne`, `brume`,
+`nuage`, `blanc`, `anthracite`.

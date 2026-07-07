@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { CreateTournoi } from "@/components/CreateTournoi";
+import { PosterVignette } from "@/components/PosterVignette";
+import { TournoiActions } from "@/components/TournoiActions";
 import { LIBELLE_TYPE, type TypeTournoi } from "@/lib/types";
 import { formatEuro } from "@/lib/finance";
 
@@ -11,7 +13,7 @@ export default async function AdminHome() {
   const { data: tournois } = await supabase
     .from("tournois")
     .select(
-      "id, nom, slug, type, date_tournoi, tarif_par_joueur, statut, equipes(id, joueurs(id, paye))"
+      "id, nom, slug, type, date_tournoi, tarif_par_joueur, statut, image_url, equipes(id, joueurs(id, paye))"
     )
     .eq("is_historique", false)
     .order("created_at", { ascending: false });
@@ -20,28 +22,27 @@ export default async function AdminHome() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-700 text-ecume">
-            Tournois en cours
+          <h1 className="display-tight text-3xl font-semibold text-encre">
+            Tournois
           </h1>
-          <p className="text-sm text-brume">
-            {liste.length} tournoi{liste.length > 1 ? "s" : ""} actif
-            {liste.length > 1 ? "s" : ""}
+          <p className="mt-1 text-sm text-ardoise">
+            {liste.length} tournoi{liste.length > 1 ? "s" : ""} en cours
           </p>
         </div>
         <CreateTournoi />
       </div>
 
       {liste.length === 0 ? (
-        <div className="card p-10 text-center">
-          <p className="text-brume">
+        <div className="card p-12 text-center">
+          <p className="mx-auto max-w-md text-ardoise">
             Aucun tournoi pour l&apos;instant. Créez votre premier tournoi pour
-            générer son lien d&apos;inscription.
+            l&apos;ajouter au lien d&apos;inscription public.
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {liste.map((t) => {
             const nbEquipes = t.equipes?.length ?? 0;
             const nbJoueurs =
@@ -56,44 +57,56 @@ export default async function AdminHome() {
                 0
               ) ?? 0;
             const encaisse = nbPayes * Number(t.tarif_par_joueur);
+            const ouvert = t.statut === "ouvert";
             return (
-              <Link
-                key={t.id}
-                href={`/admin/tournoi/${t.id}`}
-                className="card group p-5 transition hover:border-lagon/50 hover:shadow-lueur"
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="chip bg-lagon/15 text-lagon ring-1 ring-lagon/30">
-                    {LIBELLE_TYPE[t.type as TypeTournoi]}
-                  </span>
-                  <span
-                    className={`chip ${
-                      t.statut === "ouvert"
-                        ? "bg-paye/15 text-paye"
-                        : "bg-brume/15 text-brume"
-                    }`}
-                  >
-                    {t.statut === "ouvert" ? "Ouvert" : "Clôturé"}
-                  </span>
+              <div key={t.id} className="group relative">
+                <div className="absolute right-3 top-3 z-10">
+                  <TournoiActions id={t.id} isHistorique={false} />
                 </div>
-                <h2 className="font-display text-lg font-600 leading-tight text-ecume group-hover:text-lagonClair">
-                  {t.nom}
-                </h2>
-                {t.date_tournoi && (
-                  <p className="mt-1 text-sm capitalize text-brume">
-                    {new Date(t.date_tournoi).toLocaleDateString("fr-FR", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </p>
-                )}
-                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-bordure pt-4 text-center">
-                  <Stat v={nbEquipes} l="Équipes" />
-                  <Stat v={nbJoueurs} l="Joueurs" />
-                  <Stat v={formatEuro(encaisse)} l="Encaissé" />
-                </div>
-              </Link>
+                <Link
+                  href={`/admin/tournoi/${t.id}`}
+                  className="card block overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-flotte"
+                >
+                  <div className="relative">
+                    <PosterVignette
+                      src={t.image_url}
+                      alt={`Affiche ${t.nom}`}
+                      ratio="3/2"
+                    />
+                    <span
+                      className={`chip absolute left-3 top-3 backdrop-blur ${
+                        ouvert
+                          ? "bg-white/85 text-encre"
+                          : "bg-anthracite/85 text-white"
+                      }`}
+                    >
+                      {ouvert ? "Ouvert" : "Inscriptions closes"}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <p className="eyebrow mb-2">
+                      {LIBELLE_TYPE[t.type as TypeTournoi]}
+                    </p>
+                    <h2 className="display text-lg font-semibold leading-tight text-encre">
+                      {t.nom}
+                    </h2>
+                    {t.date_tournoi && (
+                      <p className="mt-1 text-sm capitalize text-ardoise">
+                        {new Date(t.date_tournoi).toLocaleDateString("fr-FR", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
+                    )}
+                    <div className="mt-4 grid grid-cols-3 gap-2 border-t border-brume pt-4 text-center">
+                      <Stat v={nbEquipes} l="Équipes" />
+                      <Stat v={nbJoueurs} l="Joueurs" />
+                      <Stat v={formatEuro(encaisse)} l="Encaissé" />
+                    </div>
+                  </div>
+                </Link>
+              </div>
             );
           })}
         </div>
@@ -105,8 +118,10 @@ export default async function AdminHome() {
 function Stat({ v, l }: { v: string | number; l: string }) {
   return (
     <div>
-      <div className="font-display text-base font-700 text-ecume">{v}</div>
-      <div className="text-[11px] uppercase tracking-wide text-brume">{l}</div>
+      <div className="display text-base font-semibold text-encre">{v}</div>
+      <div className="mt-0.5 text-[11px] uppercase tracking-wide text-ardoise">
+        {l}
+      </div>
     </div>
   );
 }
