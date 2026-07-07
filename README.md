@@ -91,8 +91,7 @@ Dans Supabase, ouvrez **SQL Editor → New query**, puis :
 > (chacune est idempotente et ne touche pas à vos données) :
 > **`supabase/migration_v2.sql`** (affiche, contact d'équipe, lien public, bucket)
 > puis **`supabase/migration_v3.sql`** (limite de places « complet » + suivi des
-> boissons) puis **`supabase/migration_v4.sql`** (liste d'attente). Si vous partez
-> de schema.sql à jour, tout est déjà inclus.
+> boissons). Si vous partez de schema.sql à jour, tout est déjà inclus.
 
 ### 3. Créer votre compte organisateur
 
@@ -150,17 +149,10 @@ Partagez le **lien unique** `/inscription`. Les joueurs y voient tous les tourno
 ouverts (avec leur affiche), choisissent le leur, renseignent leur **contact**
 (prénom, nom, téléphone), leur composition (4 à 8 joueurs), acceptent les
 **engagements** et valident. Le règlement se fait **sur place** (carte ou espèces).
-Quand le quota de places est atteint, la page affiche **« Tournoi complet »** et
-propose un bouton **« S'inscrire en liste d'attente »** (même formulaire). Pour
-fermer un tournoi manuellement : **Aperçu → Réglages → Clôturer**.
-
-### Gérer la liste d'attente
-Les équipes inscrites en liste d'attente n'occupent pas de place et n'entrent pas
-dans les finances. Elles apparaissent dans l'onglet **Équipes**, dans une section
-**« Équipes en liste d'attente »** en bas, **numérotées par ordre d'inscription**
-(1, 2, 3…). Si une équipe inscrite déclare forfait, ouvre la première de la liste
-et clique **« Faire passer inscrite »** : elle rejoint les équipes inscrites et
-libère sa place dans la file.
+Quand le quota de places est atteint, la page affiche **« Tournoi complet »** et le
+bouton d'inscription n'est plus proposé (contrôle aussi garanti côté serveur, sans
+sur-réservation possible). Pour fermer un tournoi manuellement : **Aperçu →
+Réglages → Clôturer**.
 
 ### Suivre paiements, boissons et équipes
 Onglet **Équipes** : dépliez une équipe pour **tout modifier** — nom d'équipe,

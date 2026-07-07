@@ -35,7 +35,6 @@ create table if not exists public.equipes (
   contact_nom        text,
   contact_prenom     text,
   contact_telephone  text,
-  liste_attente      boolean not null default false,   -- true = équipe en liste d'attente
   montant_historique numeric(12,2),
   created_at         timestamptz not null default now()
 );
@@ -126,8 +125,7 @@ language sql security definer set search_path = public
 as $$
   select t.id, t.nom, t.slug, t.type, t.date_tournoi, t.tarif_par_joueur, t.image_url,
          t.max_equipes,
-         (select count(*)::int from public.equipes e
-           where e.tournoi_id = t.id and e.liste_attente = false) as nb_equipes
+         (select count(*)::int from public.equipes e where e.tournoi_id = t.id) as nb_equipes
   from public.tournois t
   where t.statut = 'ouvert' and t.is_historique = false
   order by t.date_tournoi asc nulls last, t.created_at desc;
@@ -144,8 +142,7 @@ as $$
   select t.id, t.nom, t.type, t.date_tournoi, t.tarif_par_joueur,
          t.statut, t.is_historique, t.image_url,
          t.max_equipes,
-         (select count(*)::int from public.equipes e
-           where e.tournoi_id = t.id and e.liste_attente = false) as nb_equipes
+         (select count(*)::int from public.equipes e where e.tournoi_id = t.id) as nb_equipes
   from public.tournois t
   where t.slug = p_slug
   limit 1;
@@ -157,8 +154,7 @@ create or replace function public.inscrire_equipe(
   p_joueurs           text[],
   p_contact_nom       text,
   p_contact_prenom    text,
-  p_contact_telephone text,
-  p_liste_attente     boolean default false
+  p_contact_telephone text
 )
 returns uuid
 language plpgsql security definer set search_path = public
@@ -179,10 +175,8 @@ begin
     raise exception 'Les inscriptions pour ce tournoi sont fermées';
   end if;
 
-  if not p_liste_attente and v_tournoi.max_equipes is not null then
-    select count(*) into v_nb
-    from public.equipes
-    where tournoi_id = v_tournoi.id and liste_attente = false;
+  if v_tournoi.max_equipes is not null then
+    select count(*) into v_nb from public.equipes where tournoi_id = v_tournoi.id;
     if v_nb >= v_tournoi.max_equipes then
       raise exception 'Le tournoi est complet';
     end if;
@@ -207,11 +201,9 @@ begin
     raise exception 'Le contact (nom, prénom, téléphone) est obligatoire';
   end if;
 
-  insert into public.equipes
-    (tournoi_id, nom, contact_nom, contact_prenom, contact_telephone, liste_attente)
-  values
-    (v_tournoi.id, btrim(p_nom_equipe), btrim(p_contact_nom),
-     btrim(p_contact_prenom), btrim(p_contact_telephone), p_liste_attente)
+  insert into public.equipes (tournoi_id, nom, contact_nom, contact_prenom, contact_telephone)
+  values (v_tournoi.id, btrim(p_nom_equipe), btrim(p_contact_nom),
+          btrim(p_contact_prenom), btrim(p_contact_telephone))
   returning id into v_equipe_id;
 
   foreach v_nom in array p_joueurs loop
@@ -229,4 +221,4 @@ $$;
 grant execute on function public.tournois_ouverts()            to anon, authenticated;
 grant execute on function public.tournoi_public(text)          to anon, authenticated;
 grant execute on function
-  public.inscrire_equipe(text, text, text[], text, text, text, boolean) to anon, authenticated;
+  public.inscrire_equipe(text, text, text[], text, text, text) to anon, authenticated;

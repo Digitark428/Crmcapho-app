@@ -27,8 +27,7 @@ export default async function PageTournoi({
         .from("equipes")
         .select("*, joueurs(*)")
         .eq("tournoi_id", params.id)
-        .order("created_at")
-        .order("position", { foreignTable: "joueurs" }),
+        .order("nom"),
       supabase
         .from("achats_divers")
         .select("*")

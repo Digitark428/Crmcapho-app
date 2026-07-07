@@ -13,7 +13,7 @@ export default async function AdminHome() {
   const { data: tournois } = await supabase
     .from("tournois")
     .select(
-      "id, nom, slug, type, date_tournoi, tarif_par_joueur, statut, image_url, max_equipes, equipes(id, liste_attente, joueurs(id, paye))"
+      "id, nom, slug, type, date_tournoi, tarif_par_joueur, statut, image_url, equipes(id, joueurs(id, paye))"
     )
     .eq("is_historique", false)
     .order("created_at", { ascending: false });
@@ -44,23 +44,19 @@ export default async function AdminHome() {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {liste.map((t) => {
-            const inscrites = (t.equipes ?? []).filter(
-              (e: any) => !e.liste_attente
-            );
-            const nbAttente = (t.equipes?.length ?? 0) - inscrites.length;
-            const nbEquipes = inscrites.length;
-            const nbJoueurs = inscrites.reduce(
-              (a: number, e: any) => a + (e.joueurs?.length ?? 0),
-              0
-            );
-            const nbPayes = inscrites.reduce(
-              (a: number, e: any) =>
-                a + (e.joueurs?.filter((j: any) => j.paye).length ?? 0),
-              0
-            );
+            const nbEquipes = t.equipes?.length ?? 0;
+            const nbJoueurs =
+              t.equipes?.reduce(
+                (a: number, e: any) => a + (e.joueurs?.length ?? 0),
+                0
+              ) ?? 0;
+            const nbPayes =
+              t.equipes?.reduce(
+                (a: number, e: any) =>
+                  a + (e.joueurs?.filter((j: any) => j.paye).length ?? 0),
+                0
+              ) ?? 0;
             const encaisse = nbPayes * Number(t.tarif_par_joueur);
-            const complet =
-              t.max_equipes != null && nbEquipes >= t.max_equipes;
             const ouvert = t.statut === "ouvert";
             return (
               <div key={t.id} className="group relative">
@@ -79,22 +75,13 @@ export default async function AdminHome() {
                     />
                     <span
                       className={`chip absolute left-3 top-3 backdrop-blur ${
-                        !ouvert || complet
-                          ? "bg-anthracite/85 text-white"
-                          : "bg-white/85 text-encre"
+                        ouvert
+                          ? "bg-white/85 text-encre"
+                          : "bg-anthracite/85 text-white"
                       }`}
                     >
-                      {!ouvert
-                        ? "Inscriptions closes"
-                        : complet
-                          ? "Complet"
-                          : "Ouvert"}
+                      {ouvert ? "Ouvert" : "Inscriptions closes"}
                     </span>
-                    {nbAttente > 0 && (
-                      <span className="chip absolute left-3 top-11 bg-white/85 text-encre backdrop-blur">
-                        +{nbAttente} en attente
-                      </span>
-                    )}
                   </div>
                   <div className="p-5">
                     <p className="eyebrow mb-2">
