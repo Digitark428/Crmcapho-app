@@ -115,7 +115,7 @@ export default async function PageInscriptions() {
                           : "text-encre group-hover:translate-x-0.5"
                       }`}
                     >
-                      {complet ? "Complet" : "S'inscrire →"}
+                      {complet ? "Liste d'attente →" : "S'inscrire →"}
                     </span>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ interface Props {
   slug: string;
   tarifParJoueur: number;
   placesRestantes?: number | null;
+  listeAttente?: boolean;
 }
 
 const ENGAGEMENTS = [
@@ -16,7 +17,12 @@ const ENGAGEMENTS = [
   "Je m'engage à respecter les horaires d'inscription et à arriver à l'heure sur le site du tournoi.",
 ];
 
-export function InscriptionForm({ slug, tarifParJoueur, placesRestantes }: Props) {
+export function InscriptionForm({
+  slug,
+  tarifParJoueur,
+  placesRestantes,
+  listeAttente = false,
+}: Props) {
   const [nomEquipe, setNomEquipe] = useState("");
   const [contactNom, setContactNom] = useState("");
   const [contactPrenom, setContactPrenom] = useState("");
@@ -63,6 +69,7 @@ export function InscriptionForm({ slug, tarifParJoueur, placesRestantes }: Props
       p_contact_nom: contactNom.trim(),
       p_contact_prenom: contactPrenom.trim(),
       p_contact_telephone: contactTel.trim(),
+      p_liste_attente: listeAttente,
     });
     setLoading(false);
     if (error) {
@@ -88,14 +95,18 @@ export function InscriptionForm({ slug, tarifParJoueur, placesRestantes }: Props
           </svg>
         </div>
         <h2 className="display text-2xl font-semibold text-encre">
-          Équipe inscrite
+          {listeAttente ? "Équipe en liste d'attente" : "Équipe inscrite"}
         </h2>
         <p className="mt-2 text-ardoise">
-          « {nomEquipe.trim()} » est bien enregistrée. Rendez-vous sur le sable.
+          {listeAttente
+            ? `« ${nomEquipe.trim()} » est enregistrée en liste d'attente. Si une place se libère, l'organisation vous contactera dans l'ordre d'inscription.`
+            : `« ${nomEquipe.trim()} » est bien enregistrée. Rendez-vous sur le sable.`}
         </p>
         <div className="mx-auto mt-6 max-w-sm rounded-2xl bg-nuage p-5 text-left">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-ardoise">À régler sur place</span>
+            <span className="text-sm text-ardoise">
+              {listeAttente ? "À régler si une place se libère" : "À régler sur place"}
+            </span>
             <span className="display text-lg font-semibold text-encre">
               {formatEuro(nbRemplis * tarifParJoueur)}
             </span>
@@ -362,7 +373,11 @@ export function InscriptionForm({ slug, tarifParJoueur, placesRestantes }: Props
         disabled={!peutValider}
         className="btn-primary w-full py-3.5 text-base"
       >
-        {loading ? "Envoi en cours…" : "Valider l'inscription"}
+        {loading
+          ? "Envoi en cours…"
+          : listeAttente
+            ? "S'inscrire en liste d'attente"
+            : "Valider l'inscription"}
       </button>
       {!peutValider && !loading && (
         <p className="text-center text-xs text-ardoise">

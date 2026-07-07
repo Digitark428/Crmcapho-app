@@ -35,6 +35,7 @@ export interface EquipeRow {
   contact_nom: string | null;
   contact_prenom: string | null;
   contact_telephone: string | null;
+  liste_attente: boolean;
   montant_historique: number | null;
   created_at: string;
   joueurs: JoueurRow[];

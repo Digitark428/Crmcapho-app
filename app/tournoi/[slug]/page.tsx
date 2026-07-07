@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { InscriptionForm } from "@/components/InscriptionForm";
+import { ListeAttente } from "@/components/ListeAttente";
 import { Brand } from "@/components/Brand";
 import { PosterVignette } from "@/components/PosterVignette";
 import { LIBELLE_TYPE, type TypeTournoi } from "@/lib/types";
@@ -102,28 +103,11 @@ export default async function PageInscription({
           </Link>
         </div>
       ) : complet ? (
-        <div className="card p-10 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-anthracite text-white">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M18 6 6 18M6 6l12 12"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-          <h2 className="display text-xl font-semibold text-encre">
-            Tournoi complet
-          </h2>
-          <p className="mx-auto mt-2 max-w-sm text-ardoise">
-            Toutes les places ({tournoi.max_equipes} équipes) sont prises. Les
-            inscriptions ne sont plus possibles pour ce tournoi.
-          </p>
-          <Link href="/inscription" className="btn-ghost mt-6">
-            Voir les autres tournois
-          </Link>
-        </div>
+        <ListeAttente
+          slug={params.slug}
+          tarifParJoueur={Number(tournoi.tarif_par_joueur)}
+          maxEquipes={tournoi.max_equipes}
+        />
       ) : (
         <InscriptionForm
           slug={params.slug}

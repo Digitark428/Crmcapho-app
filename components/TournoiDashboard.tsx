@@ -52,14 +52,20 @@ export function TournoiDashboard({
 
   const tarif = Number(tournoi.tarif_par_joueur);
 
+  // Les équipes en liste d'attente ne comptent ni dans le quota ni dans les finances.
+  const equipesInscritesRows = useMemo(
+    () => equipes.filter((e) => !e.liste_attente),
+    [equipes]
+  );
+
   const equipesCalc: Equipe[] = useMemo(
     () =>
-      equipes.map((e) => ({
+      equipesInscritesRows.map((e) => ({
         id: e.id,
         nom: e.nom,
         joueurs: (e.joueurs ?? []).map((j) => ({ nom: j.nom, paye: j.paye })),
       })),
-    [equipes]
+    [equipesInscritesRows]
   );
 
   const stats = useMemo(
@@ -69,12 +75,13 @@ export function TournoiDashboard({
 
   const nbBoissons = useMemo(
     () =>
-      equipes.reduce(
+      equipesInscritesRows.reduce(
         (a, e) => a + e.joueurs.filter((j) => j.boisson).length,
         0
       ),
-    [equipes]
+    [equipesInscritesRows]
   );
+  const nbAttente = equipes.length - equipesInscritesRows.length;
   const complet =
     tournoi.max_equipes != null && stats.nbEquipes >= tournoi.max_equipes;
 
@@ -255,7 +262,10 @@ export function TournoiDashboard({
         {(
           [
             ["apercu", "Aperçu"],
-            ["equipes", `Équipes (${equipes.length})`],
+            [
+              "equipes",
+              `Équipes (${stats.nbEquipes}${nbAttente > 0 ? ` +${nbAttente}` : ""})`,
+            ],
             ["finances", "Finances"],
           ] as [Tab, string][]
         ).map(([id, label]) => (
@@ -517,21 +527,42 @@ function EquipesTab({
   const [expand, setExpand] = useState<string | null>(null);
   const [ajout, setAjout] = useState(false);
 
-  const filtrees = useMemo(() => {
-    const tri = [...equipes].sort((a, b) =>
-      a.nom.localeCompare(b.nom, "fr", { sensitivity: "base" })
-    );
-    if (!q.trim()) return tri;
-    const s = q.toLowerCase();
-    return tri.filter(
-      (e) =>
-        e.nom.toLowerCase().includes(s) ||
-        e.joueurs.some((j) => j.nom.toLowerCase().includes(s)) ||
-        `${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`
-          .toLowerCase()
-          .includes(s)
-    );
-  }, [equipes, q]);
+  const s = q.trim().toLowerCase();
+  const matches = (e: EquipeRow) =>
+    !s ||
+    e.nom.toLowerCase().includes(s) ||
+    e.joueurs.some((j) => j.nom.toLowerCase().includes(s)) ||
+    `${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.toLowerCase().includes(s);
+
+  // Équipes inscrites (hors liste d'attente), triées par nom.
+  const inscrites = useMemo(
+    () =>
+      equipes
+        .filter((e) => !e.liste_attente && matches(e))
+        .sort((a, b) =>
+          a.nom.localeCompare(b.nom, "fr", { sensitivity: "base" })
+        ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [equipes, s]
+  );
+
+  // Liste d'attente, triée par ordre d'inscription (created_at croissant).
+  const attenteOrdre = useMemo(
+    () =>
+      equipes
+        .filter((e) => e.liste_attente)
+        .sort(
+          (a, b) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        ),
+    [equipes]
+  );
+  const attente = useMemo(
+    () => attenteOrdre.filter(matches),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [attenteOrdre, s]
+  );
+  const rangDe = (id: string) => attenteOrdre.findIndex((x) => x.id === id) + 1;
 
   /* --- Mutations d'édition --- */
   async function majEquipe(equipeId: string, patch: Partial<EquipeRow>) {
@@ -595,6 +626,17 @@ function EquipesTab({
     await supabase.from("joueurs").delete().eq("id", joueurId);
   }
 
+  // Promouvoir une équipe de la liste d'attente vers les équipes inscrites.
+  async function promouvoir(equipeId: string) {
+    setEquipes((prev) =>
+      prev.map((e) => (e.id === equipeId ? { ...e, liste_attente: false } : e))
+    );
+    await supabase
+      .from("equipes")
+      .update({ liste_attente: false })
+      .eq("id", equipeId);
+  }
+
   async function ajouterEquipe(
     nom: string,
     joueurs: string[],
@@ -608,6 +650,7 @@ function EquipesTab({
         contact_nom: contact.nom || null,
         contact_prenom: contact.prenom || null,
         contact_telephone: contact.tel || null,
+        liste_attente: false,
       })
       .select("id")
       .single();
@@ -631,6 +674,7 @@ function EquipesTab({
         contact_nom: contact.nom || null,
         contact_prenom: contact.prenom || null,
         contact_telephone: contact.tel || null,
+        liste_attente: false,
         montant_historique: null,
         created_at: new Date().toISOString(),
         joueurs: (js as any[]) ?? [],
@@ -638,6 +682,17 @@ function EquipesTab({
     ]);
     setAjout(false);
   }
+
+  const cardProps = {
+    tarif,
+    majEquipe,
+    majJoueur,
+    toggleBoisson,
+    onToggleJoueur,
+    ajouterJoueur,
+    supprimerJoueur,
+    onSupprimer,
+  };
 
   return (
     <div>
@@ -657,169 +712,243 @@ function EquipesTab({
         <AjoutEquipe onCancel={() => setAjout(false)} onSave={ajouterEquipe} />
       )}
 
+      {/* Équipes inscrites */}
       <div className="space-y-2">
-        {filtrees.map((e) => {
-          const eq: Equipe = {
-            id: e.id,
-            nom: e.nom,
-            joueurs: e.joueurs.map((j) => ({ nom: j.nom, paye: j.paye })),
-          };
-          const st = statutEquipe(eq);
-          const ouvert = expand === e.id;
-          return (
-            <div key={e.id} className="card overflow-hidden">
-              <button
-                onClick={() => setExpand(ouvert ? null : e.id)}
-                className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-nuage"
-              >
-                <span
-                  className="h-9 w-1 shrink-0 rounded-full"
-                  style={{
-                    background:
-                      st === "paye"
-                        ? "#34C759"
-                        : st === "partiel"
-                          ? "#FF9F0A"
-                          : "#FF3B30",
-                  }}
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate font-medium text-encre">{e.nom}</div>
-                  <div className="text-xs text-ardoise">
-                    {e.joueurs.length} joueur{e.joueurs.length > 1 ? "s" : ""} ·{" "}
-                    {formatEuro(montantPaye(eq, tarif))} /{" "}
-                    {formatEuro(montantDu(eq, tarif))} · 🥤{" "}
-                    {e.joueurs.filter((j) => j.boisson).length}/{e.joueurs.length}
-                    {e.contact_prenom || e.contact_nom
-                      ? ` · ${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.trimEnd()
-                      : ""}
-                  </div>
-                </div>
-                <StatutBadge statut={st} />
-                <span className="text-ardoise">{ouvert ? "▲" : "▼"}</span>
-              </button>
-
-              {ouvert && (
-                <div className="border-t border-brume p-4">
-                  {/* Nom de l'équipe */}
-                  <div className="mb-4">
-                    <label className="label">Nom de l&apos;équipe</label>
-                    <input
-                      className="input"
-                      defaultValue={e.nom}
-                      onBlur={(ev) => {
-                        const v = ev.target.value.trim();
-                        if (v && v !== e.nom) majEquipe(e.id, { nom: v });
-                      }}
-                    />
-                  </div>
-
-                  {/* Contact référent */}
-                  <div className="mb-4">
-                    <label className="label">Contact référent</label>
-                    <div className="grid gap-2 sm:grid-cols-3">
-                      <input
-                        className="input"
-                        placeholder="Prénom"
-                        defaultValue={e.contact_prenom ?? ""}
-                        onBlur={(ev) =>
-                          majEquipe(e.id, { contact_prenom: ev.target.value.trim() })
-                        }
-                      />
-                      <input
-                        className="input"
-                        placeholder="Nom"
-                        defaultValue={e.contact_nom ?? ""}
-                        onBlur={(ev) =>
-                          majEquipe(e.id, { contact_nom: ev.target.value.trim() })
-                        }
-                      />
-                      <input
-                        className="input"
-                        type="tel"
-                        placeholder="Téléphone"
-                        defaultValue={e.contact_telephone ?? ""}
-                        onBlur={(ev) =>
-                          majEquipe(e.id, { contact_telephone: ev.target.value.trim() })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Joueurs — nom éditable, paiement, boisson, ajout/suppression */}
-                  <label className="label">Joueurs, paiement & boisson</label>
-                  <div className="space-y-2">
-                    {e.joueurs.map((j) => (
-                      <div key={j.id} className="flex flex-wrap items-center gap-2">
-                        <input
-                          className="input min-w-[150px] flex-1"
-                          placeholder="Nom du joueur"
-                          defaultValue={j.nom}
-                          onBlur={(ev) => {
-                            const v = ev.target.value.trim();
-                            if (v !== j.nom) majJoueur(e.id, j.id, v);
-                          }}
-                        />
-                        <TogglePill
-                          checked={j.paye}
-                          onChange={(v) => onToggleJoueur(e.id, j.id, v)}
-                          label="Payé"
-                          tone="paye"
-                        />
-                        <TogglePill
-                          checked={j.boisson}
-                          onChange={(v) => toggleBoisson(e.id, j.id, v)}
-                          label="🥤 Boisson"
-                          tone="dark"
-                        />
-                        <button
-                          className="btn-ghost px-3 text-nonpaye disabled:opacity-30"
-                          onClick={() => supprimerJoueur(e.id, j.id)}
-                          disabled={e.joueurs.length <= 1}
-                          aria-label="Retirer le joueur"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className="btn-ghost mt-2 text-sm"
-                    onClick={() => ajouterJoueur(e.id)}
-                  >
-                    + Ajouter un joueur
-                  </button>
-
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-brume pt-3 text-sm">
-                    <div className="text-ardoise">
-                      Payé{" "}
-                      <span className="font-medium text-[#1E8E3E]">
-                        {formatEuro(montantPaye(eq, tarif))}
-                      </span>{" "}
-                      · Restant{" "}
-                      <span className="font-medium text-encre">
-                        {formatEuro(montantRestant(eq, tarif))}
-                      </span>
-                    </div>
-                    <button
-                      className="text-sm text-nonpaye hover:underline"
-                      onClick={() => onSupprimer(e.id)}
-                    >
-                      Supprimer l&apos;équipe
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-        {filtrees.length === 0 && (
+        {inscrites.map((e) => (
+          <CarteEquipe
+            key={e.id}
+            e={e}
+            expanded={expand === e.id}
+            onToggleExpand={() => setExpand(expand === e.id ? null : e.id)}
+            {...cardProps}
+          />
+        ))}
+        {inscrites.length === 0 && (
           <div className="card p-10 text-center text-ardoise">
             Aucune équipe{" "}
             {q ? "ne correspond à la recherche" : "inscrite pour l'instant"}.
           </div>
         )}
       </div>
+
+      {/* Liste d'attente */}
+      {attenteOrdre.length > 0 && (
+        <div className="mt-8">
+          <div className="mb-2 flex items-center gap-2">
+            <h3 className="display text-lg font-semibold text-encre">
+              Équipes en liste d&apos;attente
+            </h3>
+            <span className="chip bg-anthracite text-white">
+              {attenteOrdre.length}
+            </span>
+          </div>
+          <p className="mb-3 text-sm text-ardoise">
+            Par ordre d&apos;inscription. Si une équipe inscrite déclare forfait,
+            promouvez la première de la liste (bouton « Faire passer inscrite »).
+          </p>
+          <div className="space-y-2">
+            {attente.map((e) => (
+              <CarteEquipe
+                key={e.id}
+                e={e}
+                rang={rangDe(e.id)}
+                onPromouvoir={() => promouvoir(e.id)}
+                expanded={expand === e.id}
+                onToggleExpand={() => setExpand(expand === e.id ? null : e.id)}
+                {...cardProps}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* Carte d'une équipe (inscrite ou en liste d'attente), entièrement éditable. */
+function CarteEquipe({
+  e,
+  tarif,
+  expanded,
+  onToggleExpand,
+  majEquipe,
+  majJoueur,
+  toggleBoisson,
+  onToggleJoueur,
+  ajouterJoueur,
+  supprimerJoueur,
+  onSupprimer,
+  rang,
+  onPromouvoir,
+}: {
+  e: EquipeRow;
+  tarif: number;
+  expanded: boolean;
+  onToggleExpand: () => void;
+  majEquipe: (id: string, patch: Partial<EquipeRow>) => void;
+  majJoueur: (equipeId: string, joueurId: string, nom: string) => void;
+  toggleBoisson: (equipeId: string, joueurId: string, v: boolean) => void;
+  onToggleJoueur: (equipeId: string, joueurId: string, v: boolean) => void;
+  ajouterJoueur: (equipeId: string) => void;
+  supprimerJoueur: (equipeId: string, joueurId: string) => void;
+  onSupprimer: (id: string) => void;
+  rang?: number;
+  onPromouvoir?: () => void;
+}) {
+  const eq: Equipe = {
+    id: e.id,
+    nom: e.nom,
+    joueurs: e.joueurs.map((j) => ({ nom: j.nom, paye: j.paye })),
+  };
+  const st = statutEquipe(eq);
+  return (
+    <div className="card overflow-hidden">
+      <button
+        onClick={onToggleExpand}
+        className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-nuage"
+      >
+        {rang != null ? (
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-anthracite text-xs font-semibold text-white">
+            {rang}
+          </span>
+        ) : (
+          <span
+            className="h-9 w-1 shrink-0 rounded-full"
+            style={{
+              background:
+                st === "paye" ? "#34C759" : st === "partiel" ? "#FF9F0A" : "#FF3B30",
+            }}
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-medium text-encre">{e.nom}</div>
+          <div className="text-xs text-ardoise">
+            {e.joueurs.length} joueur{e.joueurs.length > 1 ? "s" : ""} ·{" "}
+            {formatEuro(montantPaye(eq, tarif))} / {formatEuro(montantDu(eq, tarif))} · 🥤{" "}
+            {e.joueurs.filter((j) => j.boisson).length}/{e.joueurs.length}
+            {e.contact_prenom || e.contact_nom
+              ? ` · ${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.trimEnd()
+              : ""}
+          </div>
+        </div>
+        {rang == null && <StatutBadge statut={st} />}
+        <span className="text-ardoise">{expanded ? "▲" : "▼"}</span>
+      </button>
+
+      {expanded && (
+        <div className="border-t border-brume p-4">
+          {onPromouvoir && (
+            <button className="btn-primary mb-4 w-full" onClick={onPromouvoir}>
+              ↑ Faire passer inscrite (retirer de la liste d&apos;attente)
+            </button>
+          )}
+
+          <div className="mb-4">
+            <label className="label">Nom de l&apos;équipe</label>
+            <input
+              className="input"
+              defaultValue={e.nom}
+              onBlur={(ev) => {
+                const v = ev.target.value.trim();
+                if (v && v !== e.nom) majEquipe(e.id, { nom: v });
+              }}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="label">Contact référent</label>
+            <div className="grid gap-2 sm:grid-cols-3">
+              <input
+                className="input"
+                placeholder="Prénom"
+                defaultValue={e.contact_prenom ?? ""}
+                onBlur={(ev) =>
+                  majEquipe(e.id, { contact_prenom: ev.target.value.trim() })
+                }
+              />
+              <input
+                className="input"
+                placeholder="Nom"
+                defaultValue={e.contact_nom ?? ""}
+                onBlur={(ev) =>
+                  majEquipe(e.id, { contact_nom: ev.target.value.trim() })
+                }
+              />
+              <input
+                className="input"
+                type="tel"
+                placeholder="Téléphone"
+                defaultValue={e.contact_telephone ?? ""}
+                onBlur={(ev) =>
+                  majEquipe(e.id, { contact_telephone: ev.target.value.trim() })
+                }
+              />
+            </div>
+          </div>
+
+          <label className="label">Joueurs, paiement &amp; boisson</label>
+          <div className="space-y-2">
+            {e.joueurs.map((j) => (
+              <div key={j.id} className="flex flex-wrap items-center gap-2">
+                <input
+                  className="input min-w-[150px] flex-1"
+                  placeholder="Nom du joueur"
+                  defaultValue={j.nom}
+                  onBlur={(ev) => {
+                    const v = ev.target.value.trim();
+                    if (v !== j.nom) majJoueur(e.id, j.id, v);
+                  }}
+                />
+                <TogglePill
+                  checked={j.paye}
+                  onChange={(v) => onToggleJoueur(e.id, j.id, v)}
+                  label="Payé"
+                  tone="paye"
+                />
+                <TogglePill
+                  checked={j.boisson}
+                  onChange={(v) => toggleBoisson(e.id, j.id, v)}
+                  label="🥤 Boisson"
+                  tone="dark"
+                />
+                <button
+                  className="btn-ghost px-3 text-nonpaye disabled:opacity-30"
+                  onClick={() => supprimerJoueur(e.id, j.id)}
+                  disabled={e.joueurs.length <= 1}
+                  aria-label="Retirer le joueur"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            className="btn-ghost mt-2 text-sm"
+            onClick={() => ajouterJoueur(e.id)}
+          >
+            + Ajouter un joueur
+          </button>
+
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-brume pt-3 text-sm">
+            <div className="text-ardoise">
+              Payé{" "}
+              <span className="font-medium text-[#1E8E3E]">
+                {formatEuro(montantPaye(eq, tarif))}
+              </span>{" "}
+              · Restant{" "}
+              <span className="font-medium text-encre">
+                {formatEuro(montantRestant(eq, tarif))}
+              </span>
+            </div>
+            <button
+              className="text-sm text-nonpaye hover:underline"
+              onClick={() => onSupprimer(e.id)}
+            >
+              Supprimer l&apos;équipe
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

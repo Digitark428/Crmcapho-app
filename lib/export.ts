@@ -47,6 +47,7 @@ export function exporterExcel(
     const eq = { id: e.id, nom: e.nom, joueurs: (e.joueurs ?? []).map((j) => ({ nom: j.nom, paye: j.paye })) };
     return {
       Équipe: e.nom,
+      "Liste d'attente": e.liste_attente ? "Oui" : "Non",
       Contact: `${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.trim(),
       Téléphone: e.contact_telephone ?? "",
       Joueurs: (e.joueurs ?? []).map((j) => j.nom).join(", "),
