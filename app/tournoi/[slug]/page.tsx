@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { InscriptionForm } from "@/components/InscriptionForm";
 import { Brand } from "@/components/Brand";
-import { PosterVignette } from "@/components/PosterVignette";
 import { LIBELLE_TYPE, type TypeTournoi } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -26,23 +24,17 @@ export default async function PageInscription({
         tarif_par_joueur: number;
         statut: string;
         is_historique: boolean;
-        image_url: string | null;
       }
     | null;
 
   if (!tournoi) {
     return (
       <Enveloppe>
-        <div className="card p-10 text-center">
-          <h1 className="display text-2xl font-semibold text-encre">
-            Tournoi introuvable
-          </h1>
-          <p className="mt-2 text-ardoise">
+        <div className="card p-8 text-center">
+          <h1 className="font-display text-2xl font-700">Tournoi introuvable</h1>
+          <p className="mt-2 text-brume">
             Ce lien d&apos;inscription n&apos;existe pas ou a expiré.
           </p>
-          <Link href="/inscription" className="btn-ghost mt-6">
-            Voir les tournois ouverts
-          </Link>
         </div>
       </Enveloppe>
     );
@@ -60,39 +52,24 @@ export default async function PageInscription({
 
   return (
     <Enveloppe>
-      {/* Hero immersif : l'affiche du tournoi en grand */}
-      <div className="mb-8 overflow-hidden rounded-3xl border border-brume shadow-carte">
-        <PosterVignette
-          src={tournoi.image_url}
-          alt={`Affiche ${tournoi.nom}`}
-          ratio="16/9"
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
-              {LIBELLE_TYPE[tournoi.type] ?? "Tournoi"} · Inscription
-            </p>
-            <h1 className="display-tight text-3xl font-semibold leading-tight text-white sm:text-4xl">
-              {tournoi.nom}
-            </h1>
-            {dateFmt && (
-              <p className="mt-1.5 capitalize text-white/85">{dateFmt}</p>
-            )}
-          </div>
-        </PosterVignette>
+      <div className="mb-6 text-center">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-lagon">
+          {LIBELLE_TYPE[tournoi.type] ?? "Tournoi"} · Inscription
+        </p>
+        <h1 className="font-display text-3xl font-700 leading-tight text-ecume">
+          {tournoi.nom}
+        </h1>
+        {dateFmt && <p className="mt-2 capitalize text-brume">{dateFmt}</p>}
       </div>
 
       {ferme ? (
-        <div className="card p-10 text-center">
-          <h2 className="display text-xl font-semibold text-encre">
-            Inscriptions closes
+        <div className="card p-8 text-center">
+          <h2 className="font-display text-xl font-700 text-corail">
+            Inscriptions fermées
           </h2>
-          <p className="mt-2 text-ardoise">
+          <p className="mt-2 text-brume">
             Les inscriptions pour ce tournoi ne sont plus ouvertes.
           </p>
-          <Link href="/inscription" className="btn-ghost mt-6">
-            Voir les autres tournois
-          </Link>
         </div>
       ) : (
         <InscriptionForm
@@ -106,20 +83,12 @@ export default async function PageInscription({
 
 function Enveloppe({ children }: { children: React.ReactNode }) {
   return (
-    <main className="mx-auto min-h-screen max-w-2xl px-5 py-8 sm:py-10">
-      <div className="mb-8 flex items-center justify-between">
-        <Link href="/">
-          <Brand />
-        </Link>
-        <Link
-          href="/inscription"
-          className="text-[13px] font-medium text-ardoise transition hover:text-encre"
-        >
-          ← Tous les tournois
-        </Link>
+    <main className="mx-auto min-h-screen max-w-lg px-4 py-10">
+      <div className="mb-8 flex justify-center">
+        <Brand />
       </div>
       {children}
-      <footer className="mt-10 text-center text-xs text-ardoise">
+      <footer className="mt-10 text-center text-xs text-brume/50">
         CAP HOMARD BEACH VOLLEY 974
       </footer>
     </main>

@@ -10,7 +10,6 @@ export interface Tournoi {
   tarif_par_joueur: number;
   statut: StatutTournoi;
   is_historique: boolean;
-  image_url: string | null;
   rentree_buvette: number;
   depense_buvette: number;
   rentree_inscriptions_manuelle: number | null;
@@ -30,9 +29,6 @@ export interface EquipeRow {
   id: string;
   tournoi_id: string;
   nom: string;
-  contact_nom: string | null;
-  contact_prenom: string | null;
-  contact_telephone: string | null;
   montant_historique: number | null;
   created_at: string;
   joueurs: JoueurRow[];

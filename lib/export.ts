@@ -47,8 +47,6 @@ export function exporterExcel(
     const eq = { id: e.id, nom: e.nom, joueurs: (e.joueurs ?? []).map((j) => ({ nom: j.nom, paye: j.paye })) };
     return {
       Équipe: e.nom,
-      Contact: `${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.trim(),
-      Téléphone: e.contact_telephone ?? "",
       Joueurs: (e.joueurs ?? []).map((j) => j.nom).join(", "),
       "Nb joueurs": e.joueurs?.length ?? 0,
       "Montant dû (€)": montantDu(eq, tarif),
