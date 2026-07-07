@@ -3,67 +3,64 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html,
 body {
-  background: #ffffff;
-  color: #1d1d1f;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(34, 184, 207, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(255, 122, 60, 0.08), transparent 55%),
+    #081422;
+  color: #f4faff;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-/* Titres : traitement « SF Pro Display » — resserré, dense */
-.display {
-  letter-spacing: -0.022em;
-}
-.display-tight {
-  letter-spacing: -0.03em;
+/* Ligne d'horizon décorative (signature "océan") */
+.horizon::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 184, 207, 0.5),
+    transparent
+  );
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
   }
-  /* Noir plein — l'action principale, façon bouton Apple */
   .btn-primary {
-    @apply btn bg-noir text-blanc hover:bg-encre;
+    @apply btn bg-lagon text-abysse hover:bg-lagonClair shadow-lueur;
   }
-  /* Contour discret sur blanc */
+  .btn-accent {
+    @apply btn bg-corail text-abysse hover:bg-corailClair;
+  }
   .btn-ghost {
-    @apply btn border border-ligne bg-blanc text-encre hover:bg-nuage;
-  }
-  /* Variante « pilule » pour les grands CTA (accueil / public) */
-  .btn-pill {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-medium transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+    @apply btn border border-bordure bg-recif/40 text-ecume hover:bg-recif2;
   }
   .btn-danger {
-    @apply btn bg-nonpaye text-blanc hover:brightness-95;
+    @apply btn bg-nonpaye/90 text-white hover:bg-nonpaye;
   }
   .card {
-    @apply rounded-2xl border border-brume bg-blanc shadow-carte;
+    @apply rounded-2xl border border-bordure bg-recif/70 shadow-carte backdrop-blur;
   }
   .input {
-    @apply w-full rounded-xl border border-ligne bg-blanc px-3.5 py-2.5 text-encre placeholder-ardoise/60 outline-none transition focus:border-encre focus:shadow-focus;
+    @apply w-full rounded-xl border border-bordure bg-abysse/60 px-3.5 py-2.5 text-ecume placeholder-brume/60 outline-none transition focus:border-lagon focus:ring-2 focus:ring-lagon/30;
   }
   .label {
-    @apply mb-1.5 block text-[13px] font-medium text-ardoise;
+    @apply mb-1.5 block text-sm font-medium text-brume;
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
-  }
-  .eyebrow {
-    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-ardoise;
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
   }
 }
 
-/* Checkbox monochrome : coche noire */
-input[type="checkbox"] {
-  accent-color: #1d1d1f;
-}
-
-/* ---- Impression PDF (Cmd/Ctrl + P sur la page bilan) ---- */
+/* ---- Impression PDF (Ctrl/Cmd + P sur la page bilan) ---- */
 @media print {
   body {
     background: #fff !important;
@@ -79,16 +76,8 @@ input[type="checkbox"] {
     color: #000 !important;
   }
   .card {
-    border: 1px solid #d2d2d7 !important;
-    box-shadow: none !important;
+    border: 1px solid #ccc !important;
     background: #fff !important;
     color: #000 !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
   }
 }
