@@ -22,12 +22,12 @@ export function AdminNav({ email }: { email: string | null }) {
   ];
 
   return (
-    <header className="no-print sticky top-0 z-30 border-b border-bordure bg-abysse/80 backdrop-blur">
+    <header className="no-print sticky top-0 z-30 border-b border-brume bg-blanc/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/admin" className="shrink-0">
           <Brand compact />
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-2">
+        <nav className="flex items-center gap-1">
           {links.map((l) => {
             const active =
               l.href === "/admin"
@@ -39,8 +39,8 @@ export function AdminNav({ email }: { email: string | null }) {
                 href={l.href}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
                   active
-                    ? "bg-recif2 text-ecume"
-                    : "text-brume hover:bg-recif/60 hover:text-ecume"
+                    ? "bg-nuage text-encre"
+                    : "text-ardoise hover:bg-nuage hover:text-encre"
                 }`}
               >
                 {l.label}
@@ -49,7 +49,7 @@ export function AdminNav({ email }: { email: string | null }) {
           })}
           <button
             onClick={logout}
-            className="ml-1 rounded-lg px-3 py-2 text-sm font-medium text-brume transition hover:bg-recif/60 hover:text-ecume"
+            className="ml-1 rounded-lg px-3 py-2 text-sm font-medium text-ardoise transition hover:bg-nuage hover:text-encre"
             title={email ?? undefined}
           >
             Déconnexion

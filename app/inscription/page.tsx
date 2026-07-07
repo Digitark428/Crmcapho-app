@@ -15,6 +15,8 @@ interface TournoiOuvert {
   date_tournoi: string | null;
   tarif_par_joueur: number;
   image_url: string | null;
+  max_equipes: number | null;
+  nb_equipes: number;
 }
 
 function formatDate(d: string | null): string | null {
@@ -69,40 +71,57 @@ export default async function PageInscriptions() {
         </div>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {tournois.map((t) => (
-            <Link
-              key={t.id}
-              href={`/tournoi/${t.slug}`}
-              className="group card overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-flotte"
-            >
-              <PosterVignette
-                src={t.image_url}
-                alt={`Affiche ${t.nom}`}
-                ratio="4/5"
-              />
-              <div className="p-5">
-                <p className="eyebrow mb-2">
-                  {LIBELLE_TYPE[t.type] ?? "Tournoi"}
-                </p>
-                <h2 className="display text-lg font-semibold leading-tight text-encre">
-                  {t.nom}
-                </h2>
-                {formatDate(t.date_tournoi) && (
-                  <p className="mt-1 text-sm capitalize text-ardoise">
-                    {formatDate(t.date_tournoi)}
-                  </p>
-                )}
-                <div className="mt-4 flex items-center justify-between border-t border-brume pt-4">
-                  <span className="text-sm text-ardoise">
-                    {formatEuro(Number(t.tarif_par_joueur))} / joueur
-                  </span>
-                  <span className="text-[13px] font-medium text-encre transition group-hover:translate-x-0.5">
-                    S&apos;inscrire →
-                  </span>
+          {tournois.map((t) => {
+            const complet =
+              t.max_equipes != null && t.nb_equipes >= t.max_equipes;
+            return (
+              <Link
+                key={t.id}
+                href={`/tournoi/${t.slug}`}
+                className="group card overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-flotte"
+              >
+                <div className="relative">
+                  <PosterVignette
+                    src={t.image_url}
+                    alt={`Affiche ${t.nom}`}
+                    ratio="4/5"
+                  />
+                  {complet && (
+                    <span className="chip absolute left-3 top-3 bg-anthracite/90 text-white backdrop-blur">
+                      Complet
+                    </span>
+                  )}
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="p-5">
+                  <p className="eyebrow mb-2">
+                    {LIBELLE_TYPE[t.type] ?? "Tournoi"}
+                  </p>
+                  <h2 className="display text-lg font-semibold leading-tight text-encre">
+                    {t.nom}
+                  </h2>
+                  {formatDate(t.date_tournoi) && (
+                    <p className="mt-1 text-sm capitalize text-ardoise">
+                      {formatDate(t.date_tournoi)}
+                    </p>
+                  )}
+                  <div className="mt-4 flex items-center justify-between border-t border-brume pt-4">
+                    <span className="text-sm text-ardoise">
+                      {formatEuro(Number(t.tarif_par_joueur))} / joueur
+                    </span>
+                    <span
+                      className={`text-[13px] font-medium transition ${
+                        complet
+                          ? "text-ardoise"
+                          : "text-encre group-hover:translate-x-0.5"
+                      }`}
+                    >
+                      {complet ? "Complet" : "S'inscrire →"}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
 

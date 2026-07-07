@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Brand } from "@/components/Brand";
 
@@ -35,10 +36,10 @@ function LoginForm() {
 
   return (
     <div className="card p-7">
-      <h1 className="mb-1 font-display text-2xl font-700 text-ecume">
+      <h1 className="display mb-1 text-2xl font-semibold text-encre">
         Espace organisateur
       </h1>
-      <p className="mb-6 text-sm text-brume">
+      <p className="mb-6 text-sm text-ardoise">
         Connectez-vous pour gérer vos tournois.
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,7 +72,7 @@ function LoginForm() {
           />
         </div>
         {erreur && (
-          <p className="rounded-xl bg-nonpaye/10 px-4 py-2.5 text-sm text-nonpaye ring-1 ring-nonpaye/30">
+          <p className="rounded-xl border border-nonpaye/30 bg-nonpaye/5 px-4 py-2.5 text-sm text-nonpaye">
             {erreur}
           </p>
         )}
@@ -87,16 +88,18 @@ export default function LoginPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
       <div className="mb-8 flex justify-center">
-        <Brand />
+        <Link href="/">
+          <Brand />
+        </Link>
       </div>
       <Suspense
         fallback={
-          <div className="card p-7 text-center text-brume">Chargement…</div>
+          <div className="card p-7 text-center text-ardoise">Chargement…</div>
         }
       >
         <LoginForm />
       </Suspense>
-      <p className="mt-4 text-center text-xs text-brume/60">
+      <p className="mt-4 text-center text-xs text-ardoise">
         Les comptes organisateurs se créent dans le tableau de bord Supabase
         (Authentication → Users).
       </p>

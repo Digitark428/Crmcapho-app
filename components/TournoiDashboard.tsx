@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { slugify } from "@/lib/slug";
 import { exporterExcel } from "@/lib/export";
+import { uploadAffiche } from "@/lib/upload";
 import { StatutBadge } from "@/components/StatutBadge";
+import { PosterVignette } from "@/components/PosterVignette";
+import { TournoiActions } from "@/components/TournoiActions";
 import {
   calculerFinances,
   formatEuro,
@@ -44,10 +47,11 @@ export function TournoiDashboard({
   const [equipes, setEquipes] = useState<EquipeRow[]>(equipesInit);
   const [achats, setAchats] = useState<LigneFinance[]>(achatsInit);
   const [frais, setFrais] = useState<LigneFinance[]>(fraisInit);
+  const [afficheEnCours, setAfficheEnCours] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const tarif = Number(tournoi.tarif_par_joueur);
 
-  // Adaptateur EquipeRow -> Equipe (type finance)
   const equipesCalc: Equipe[] = useMemo(
     () =>
       equipes.map((e) => ({
@@ -62,6 +66,17 @@ export function TournoiDashboard({
     () => statsTournoi(equipesCalc, tarif),
     [equipesCalc, tarif]
   );
+
+  const nbBoissons = useMemo(
+    () =>
+      equipes.reduce(
+        (a, e) => a + e.joueurs.filter((j) => j.boisson).length,
+        0
+      ),
+    [equipes]
+  );
+  const complet =
+    tournoi.max_equipes != null && stats.nbEquipes >= tournoi.max_equipes;
 
   const rentreeInscriptions = rentreeInscriptionsAuto(equipesCalc, tarif);
   const finances = useMemo(
@@ -100,6 +115,20 @@ export function TournoiDashboard({
     await supabase.from("tournois").update({ [champ]: valeur }).eq("id", tournoi.id);
   }
 
+  async function changerAffiche(file: File) {
+    setAfficheEnCours(true);
+    try {
+      const url = await uploadAffiche(supabase, tournoi.id, file);
+      await majTournoi("image_url", url);
+    } catch {
+      alert(
+        "L'envoi de l'affiche a échoué. Vérifiez que le bucket « tournoi-images » existe (voir migration_v2.sql)."
+      );
+    } finally {
+      setAfficheEnCours(false);
+    }
+  }
+
   async function dupliquer() {
     const nouveauNom = `${tournoi.nom} (copie)`;
     const { data, error } = await supabase
@@ -112,24 +141,13 @@ export function TournoiDashboard({
         tarif_par_joueur: tarif,
         statut: "ouvert",
         is_historique: false,
+        image_url: tournoi.image_url,
       })
       .select("id")
       .single();
     if (error || !data) {
       alert("Erreur lors de la duplication.");
       return;
-    }
-    // Copier les lignes de frais (sans les équipes)
-    if (frais.length > 0) {
-      await supabase.from("frais_association").insert(
-        frais.map((f, i) => ({
-          tournoi_id: data.id,
-          description: f.description,
-          montant: f.montant,
-          fonction: f.fonction ?? "",
-          position: i + 1,
-        }))
-      );
     }
     router.push(`/admin/tournoi/${data.id}`);
     router.refresh();
@@ -139,46 +157,101 @@ export function TournoiDashboard({
 
   return (
     <div>
-      {/* En-tête */}
-      <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <span className="chip mb-2 bg-lagon/15 text-lagon ring-1 ring-lagon/30">
-            {LIBELLE_TYPE[tournoi.type]}
-          </span>
-          <h1 className="font-display text-2xl font-700 text-ecume sm:text-3xl">
-            {tournoi.nom}
-          </h1>
-          {tournoi.date_tournoi && (
-            <p className="mt-1 capitalize text-brume">
-              {new Date(tournoi.date_tournoi).toLocaleDateString("fr-FR", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          )}
-        </div>
-        <div className="no-print flex flex-wrap gap-2">
+      {/* En-tête : affiche + titre + actions */}
+      <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-start">
+        <div className="w-full shrink-0 sm:w-44">
+          <div className="overflow-hidden rounded-2xl border border-brume">
+            <PosterVignette
+              src={tournoi.image_url}
+              alt={`Affiche ${tournoi.nom}`}
+              ratio="4/5"
+            />
+          </div>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) changerAffiche(f);
+            }}
+          />
           <button
-            className="btn-ghost"
-            onClick={() =>
-              exporterExcel(tournoi, equipes, achats, frais)
-            }
+            className="btn-ghost no-print mt-2 w-full text-sm"
+            onClick={() => fileRef.current?.click()}
+            disabled={afficheEnCours}
           >
-            Export Excel
+            {afficheEnCours
+              ? "Envoi…"
+              : tournoi.image_url
+                ? "Changer l'affiche"
+                : "Ajouter une affiche"}
           </button>
-          <button className="btn-ghost" onClick={() => window.print()}>
-            Export PDF
-          </button>
-          <button className="btn-ghost" onClick={dupliquer}>
-            Dupliquer
-          </button>
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <span className="chip mb-2 bg-nuage text-encre">
+                {LIBELLE_TYPE[tournoi.type]}
+              </span>
+              <h1 className="display-tight text-2xl font-semibold text-encre sm:text-3xl">
+                {tournoi.nom}
+              </h1>
+              {tournoi.date_tournoi && (
+                <p className="mt-1 capitalize text-ardoise">
+                  {new Date(tournoi.date_tournoi).toLocaleDateString("fr-FR", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </p>
+              )}
+            </div>
+            <span
+              className={`chip ${
+                tournoi.statut !== "ouvert"
+                  ? "bg-anthracite text-white"
+                  : complet
+                    ? "bg-anthracite text-white"
+                    : "bg-paye/10 text-[#1E8E3E]"
+              }`}
+            >
+              {tournoi.statut !== "ouvert"
+                ? "Inscriptions closes"
+                : complet
+                  ? "Complet"
+                  : "Ouvert"}
+            </span>
+          </div>
+
+          <div className="no-print mt-4 flex flex-wrap gap-2">
+            <button
+              className="btn-ghost"
+              onClick={() => exporterExcel(tournoi, equipes, achats, frais)}
+            >
+              Export Excel
+            </button>
+            <button className="btn-ghost" onClick={() => window.print()}>
+              Export PDF
+            </button>
+            <button className="btn-ghost" onClick={dupliquer}>
+              Dupliquer
+            </button>
+            <TournoiActions
+              id={tournoi.id}
+              isHistorique={tournoi.is_historique}
+              variant="inline"
+              redirectTo="/admin"
+            />
+          </div>
         </div>
       </div>
 
       {/* Onglets */}
-      <div className="no-print mb-6 inline-flex rounded-xl border border-bordure bg-recif/40 p-1">
+      <div className="no-print mb-6 inline-flex rounded-xl border border-brume bg-nuage p-1">
         {(
           [
             ["apercu", "Aperçu"],
@@ -189,8 +262,10 @@ export function TournoiDashboard({
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
-              tab === id ? "bg-lagon text-abysse" : "text-brume hover:text-ecume"
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+              tab === id
+                ? "bg-blanc text-encre shadow-carte"
+                : "text-ardoise hover:text-encre"
             }`}
           >
             {label}
@@ -204,10 +279,12 @@ export function TournoiDashboard({
           stats={stats}
           finances={finances}
           lienPublic={lienPublic}
+          nbBoissons={nbBoissons}
           onToggleStatut={() =>
             majTournoi("statut", tournoi.statut === "ouvert" ? "cloture" : "ouvert")
           }
           onTarif={(v: number) => majTournoi("tarif_par_joueur", v)}
+          onPlaces={(v: number | null) => majTournoi("max_equipes", v)}
           tarif={tarif}
         />
       )}
@@ -247,25 +324,45 @@ function Apercu({
   stats,
   finances,
   lienPublic,
+  nbBoissons,
   onToggleStatut,
   onTarif,
+  onPlaces,
   tarif,
 }: any) {
   const [copie, setCopie] = useState(false);
+  const placesLabel =
+    tournoi.max_equipes != null
+      ? `${stats.nbEquipes} / ${tournoi.max_equipes}`
+      : `${stats.nbEquipes}`;
+  const complet =
+    tournoi.max_equipes != null && stats.nbEquipes >= tournoi.max_equipes;
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <StatCard label="Équipes" value={stats.nbEquipes} />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <StatCard
+          label="Places"
+          value={placesLabel}
+          hint={
+            tournoi.max_equipes != null
+              ? complet
+                ? "complet"
+                : `${tournoi.max_equipes - stats.nbEquipes} restantes`
+              : "illimité"
+          }
+          tone={complet ? "nonpaye" : undefined}
+        />
         <StatCard label="Joueurs" value={stats.nbJoueurs} />
         <StatCard
           label="Inscriptions"
           value={formatEuro(stats.montantTotalInscriptions)}
           hint="dû (tous joueurs)"
         />
+        <StatCard label="Encaissé" value={formatEuro(stats.montantEncaisse)} />
         <StatCard
-          label="Encaissé"
-          value={formatEuro(stats.montantEncaisse)}
-          tone="paye"
+          label="Boissons"
+          value={`${nbBoissons} / ${stats.nbJoueurs}`}
+          hint="récupérées"
         />
         <StatCard
           label="Bénéfice estimé"
@@ -275,26 +372,24 @@ function Apercu({
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Équipes payées" value={stats.equipesPayees} tone="paye" />
+        <StatCard label="Équipes payées" value={stats.equipesPayees} dot="paye" />
         <StatCard
           label="Paiement partiel"
           value={stats.equipesPartielles}
-          tone="partiel"
+          dot="partiel"
         />
-        <StatCard
-          label="Non payées"
-          value={stats.equipesNonPayees}
-          tone="nonpaye"
-        />
+        <StatCard label="Non payées" value={stats.equipesNonPayees} dot="nonpaye" />
       </div>
 
       {/* Lien d'inscription */}
       <div className="card no-print p-5">
-        <h3 className="mb-1 font-display text-lg font-600 text-ecume">
+        <h3 className="display mb-1 text-lg font-semibold text-encre">
           Lien d&apos;inscription public
         </h3>
-        <p className="mb-3 text-sm text-brume">
-          Partagez ce lien aux équipes. Elles s&apos;ajoutent automatiquement ici.
+        <p className="mb-3 text-sm text-ardoise">
+          Ce tournoi apparaît aussi automatiquement dans le lien unique{" "}
+          <span className="text-encre">/inscription</span>. Ce lien direct mène
+          droit à son formulaire.
         </p>
         <div className="flex flex-col gap-2 sm:flex-row">
           <input readOnly value={lienPublic} className="input font-mono text-sm" />
@@ -313,7 +408,7 @@ function Apercu({
 
       {/* Réglages */}
       <div className="card no-print p-5">
-        <h3 className="mb-4 font-display text-lg font-600 text-ecume">Réglages</h3>
+        <h3 className="display mb-4 text-lg font-semibold text-encre">Réglages</h3>
         <div className="flex flex-wrap items-end gap-6">
           <div>
             <label className="label">Tarif par joueur (€)</label>
@@ -327,17 +422,37 @@ function Apercu({
             />
           </div>
           <div>
+            <label className="label">Places (équipes)</label>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              placeholder="Illimité"
+              defaultValue={tournoi.max_equipes ?? ""}
+              onBlur={(e) => {
+                const v = e.target.value.trim();
+                onPlaces(v === "" ? null : Math.max(1, parseInt(v, 10)));
+              }}
+              className="input w-32"
+            />
+          </div>
+          <div>
             <label className="label">Inscriptions</label>
             <button
               onClick={onToggleStatut}
               className={tournoi.statut === "ouvert" ? "btn-ghost" : "btn-primary"}
             >
               {tournoi.statut === "ouvert"
-                ? "Ouvertes — cliquer pour fermer"
-                : "Fermées — cliquer pour ouvrir"}
+                ? "Ouvertes — clôturer"
+                : "Closes — rouvrir"}
             </button>
           </div>
         </div>
+        <p className="mt-3 text-xs text-ardoise">
+          Places : laissez vide pour un nombre illimité. Une fois le quota
+          atteint, l&apos;inscription publique affiche « Tournoi complet ». Une
+          fois clôturé, le tournoi disparaît du lien public.
+        </p>
       </div>
     </div>
   );
@@ -348,33 +463,39 @@ function StatCard({
   value,
   hint,
   tone,
+  dot,
 }: {
   label: string;
   value: string | number;
   hint?: string;
-  tone?: "paye" | "partiel" | "nonpaye";
+  tone?: "paye" | "nonpaye";
+  dot?: "paye" | "partiel" | "nonpaye";
 }) {
   const color =
-    tone === "paye"
-      ? "text-paye"
-      : tone === "partiel"
-        ? "text-partiel"
-        : tone === "nonpaye"
-          ? "text-nonpaye"
-          : "text-ecume";
+    tone === "paye" ? "text-[#1E8E3E]" : tone === "nonpaye" ? "text-nonpaye" : "text-encre";
+  const dotColor =
+    dot === "paye" ? "#34C759" : dot === "partiel" ? "#FF9F0A" : "#FF3B30";
   return (
     <div className="card p-4">
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-brume">
-        {label}
+      <div className="flex items-center gap-1.5">
+        {dot && (
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ background: dotColor }}
+          />
+        )}
+        <div className="text-[11px] font-medium uppercase tracking-wide text-ardoise">
+          {label}
+        </div>
       </div>
-      <div className={`mt-1 font-display text-2xl font-700 ${color}`}>{value}</div>
-      {hint && <div className="text-[11px] text-brume/60">{hint}</div>}
+      <div className={`display mt-1 text-2xl font-semibold ${color}`}>{value}</div>
+      {hint && <div className="text-[11px] text-ardoise/70">{hint}</div>}
     </div>
   );
 }
 
 /* ============================================================
- *  Équipes
+ *  Équipes — édition complète
  * ============================================================ */
 function EquipesTab({
   equipes,
@@ -405,14 +526,89 @@ function EquipesTab({
     return tri.filter(
       (e) =>
         e.nom.toLowerCase().includes(s) ||
-        e.joueurs.some((j) => j.nom.toLowerCase().includes(s))
+        e.joueurs.some((j) => j.nom.toLowerCase().includes(s)) ||
+        `${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`
+          .toLowerCase()
+          .includes(s)
     );
   }, [equipes, q]);
 
-  async function ajouterEquipe(nom: string, joueurs: string[]) {
+  /* --- Mutations d'édition --- */
+  async function majEquipe(equipeId: string, patch: Partial<EquipeRow>) {
+    setEquipes((prev) =>
+      prev.map((e) => (e.id === equipeId ? { ...e, ...patch } : e))
+    );
+    await supabase.from("equipes").update(patch).eq("id", equipeId);
+  }
+
+  async function majJoueur(equipeId: string, joueurId: string, nom: string) {
+    setEquipes((prev) =>
+      prev.map((e) =>
+        e.id === equipeId
+          ? { ...e, joueurs: e.joueurs.map((j) => (j.id === joueurId ? { ...j, nom } : j)) }
+          : e
+      )
+    );
+    await supabase.from("joueurs").update({ nom }).eq("id", joueurId);
+  }
+
+  async function toggleBoisson(equipeId: string, joueurId: string, boisson: boolean) {
+    setEquipes((prev) =>
+      prev.map((e) =>
+        e.id === equipeId
+          ? {
+              ...e,
+              joueurs: e.joueurs.map((j) =>
+                j.id === joueurId ? { ...j, boisson } : j
+              ),
+            }
+          : e
+      )
+    );
+    await supabase.from("joueurs").update({ boisson }).eq("id", joueurId);
+  }
+
+  async function ajouterJoueur(equipeId: string) {
+    const eq = equipes.find((e) => e.id === equipeId);
+    const pos = (eq?.joueurs.length ?? 0) + 1;
+    const { data } = await supabase
+      .from("joueurs")
+      .insert({ equipe_id: equipeId, nom: "", position: pos, paye: false })
+      .select()
+      .single();
+    if (data)
+      setEquipes((prev) =>
+        prev.map((e) =>
+          e.id === equipeId ? { ...e, joueurs: [...e.joueurs, data as any] } : e
+        )
+      );
+  }
+
+  async function supprimerJoueur(equipeId: string, joueurId: string) {
+    setEquipes((prev) =>
+      prev.map((e) =>
+        e.id === equipeId
+          ? { ...e, joueurs: e.joueurs.filter((j) => j.id !== joueurId) }
+          : e
+      )
+    );
+    await supabase.from("joueurs").delete().eq("id", joueurId);
+  }
+
+  async function ajouterEquipe(
+    nom: string,
+    joueurs: string[],
+    contact: { nom: string; prenom: string; tel: string }
+  ) {
     const { data, error } = await supabase
       .from("equipes")
-      .insert({ tournoi_id: tournoiId, nom })
+      .insert({
+        tournoi_id: tournoiId,
+        nom,
+        contact_nom: contact.nom || null,
+        contact_prenom: contact.prenom || null,
+        contact_telephone: contact.tel || null,
+      })
       .select("id")
       .single();
     if (error || !data) {
@@ -432,6 +628,9 @@ function EquipesTab({
         id: data.id,
         tournoi_id: tournoiId,
         nom,
+        contact_nom: contact.nom || null,
+        contact_prenom: contact.prenom || null,
+        contact_telephone: contact.tel || null,
         montant_historique: null,
         created_at: new Date().toISOString(),
         joueurs: (js as any[]) ?? [],
@@ -445,20 +644,17 @@ function EquipesTab({
       <div className="no-print mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <input
           className="input sm:max-w-xs"
-          placeholder="Rechercher une équipe ou un joueur…"
+          placeholder="Rechercher une équipe, un joueur, un contact…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        <button className="btn-accent" onClick={() => setAjout(true)}>
+        <button className="btn-primary" onClick={() => setAjout(true)}>
           + Ajouter une équipe
         </button>
       </div>
 
       {ajout && (
-        <AjoutEquipe
-          onCancel={() => setAjout(false)}
-          onSave={ajouterEquipe}
-        />
+        <AjoutEquipe onCancel={() => setAjout(false)} onSave={ajouterEquipe} />
       )}
 
       <div className="space-y-2">
@@ -474,64 +670,134 @@ function EquipesTab({
             <div key={e.id} className="card overflow-hidden">
               <button
                 onClick={() => setExpand(ouvert ? null : e.id)}
-                className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-recif2/40"
+                className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-nuage"
               >
                 <span
-                  className="h-9 w-1.5 shrink-0 rounded-full"
+                  className="h-9 w-1 shrink-0 rounded-full"
                   style={{
                     background:
                       st === "paye"
-                        ? "#22C55E"
+                        ? "#34C759"
                         : st === "partiel"
-                          ? "#F59E0B"
-                          : "#EF4444",
+                          ? "#FF9F0A"
+                          : "#FF3B30",
                   }}
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="truncate font-display font-600 text-ecume">
-                    {e.nom}
-                  </div>
-                  <div className="text-xs text-brume">
+                  <div className="truncate font-medium text-encre">{e.nom}</div>
+                  <div className="text-xs text-ardoise">
                     {e.joueurs.length} joueur{e.joueurs.length > 1 ? "s" : ""} ·{" "}
-                    {formatEuro(montantPaye(eq, tarif))} / {formatEuro(montantDu(eq, tarif))}
+                    {formatEuro(montantPaye(eq, tarif))} /{" "}
+                    {formatEuro(montantDu(eq, tarif))} · 🥤{" "}
+                    {e.joueurs.filter((j) => j.boisson).length}/{e.joueurs.length}
+                    {e.contact_prenom || e.contact_nom
+                      ? ` · ${e.contact_prenom ?? ""} ${e.contact_nom ?? ""}`.trimEnd()
+                      : ""}
                   </div>
                 </div>
                 <StatutBadge statut={st} />
-                <span className="text-brume">{ouvert ? "▲" : "▼"}</span>
+                <span className="text-ardoise">{ouvert ? "▲" : "▼"}</span>
               </button>
 
               {ouvert && (
-                <div className="border-t border-bordure p-4">
-                  <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-2">
+                <div className="border-t border-brume p-4">
+                  {/* Nom de l'équipe */}
+                  <div className="mb-4">
+                    <label className="label">Nom de l&apos;équipe</label>
+                    <input
+                      className="input"
+                      defaultValue={e.nom}
+                      onBlur={(ev) => {
+                        const v = ev.target.value.trim();
+                        if (v && v !== e.nom) majEquipe(e.id, { nom: v });
+                      }}
+                    />
+                  </div>
+
+                  {/* Contact référent */}
+                  <div className="mb-4">
+                    <label className="label">Contact référent</label>
+                    <div className="grid gap-2 sm:grid-cols-3">
+                      <input
+                        className="input"
+                        placeholder="Prénom"
+                        defaultValue={e.contact_prenom ?? ""}
+                        onBlur={(ev) =>
+                          majEquipe(e.id, { contact_prenom: ev.target.value.trim() })
+                        }
+                      />
+                      <input
+                        className="input"
+                        placeholder="Nom"
+                        defaultValue={e.contact_nom ?? ""}
+                        onBlur={(ev) =>
+                          majEquipe(e.id, { contact_nom: ev.target.value.trim() })
+                        }
+                      />
+                      <input
+                        className="input"
+                        type="tel"
+                        placeholder="Téléphone"
+                        defaultValue={e.contact_telephone ?? ""}
+                        onBlur={(ev) =>
+                          majEquipe(e.id, { contact_telephone: ev.target.value.trim() })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {/* Joueurs — nom éditable, paiement, boisson, ajout/suppression */}
+                  <label className="label">Joueurs, paiement & boisson</label>
+                  <div className="space-y-2">
                     {e.joueurs.map((j) => (
-                      <label
-                        key={j.id}
-                        className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-bordure bg-abysse/40 px-3 py-2"
-                      >
+                      <div key={j.id} className="flex flex-wrap items-center gap-2">
                         <input
-                          type="checkbox"
-                          checked={j.paye}
-                          onChange={(ev) =>
-                            onToggleJoueur(e.id, j.id, ev.target.checked)
-                          }
-                          className="h-4 w-4 accent-paye"
+                          className="input min-w-[150px] flex-1"
+                          placeholder="Nom du joueur"
+                          defaultValue={j.nom}
+                          onBlur={(ev) => {
+                            const v = ev.target.value.trim();
+                            if (v !== j.nom) majJoueur(e.id, j.id, v);
+                          }}
                         />
-                        <span
-                          className={`text-sm ${j.paye ? "text-ecume" : "text-brume"}`}
+                        <TogglePill
+                          checked={j.paye}
+                          onChange={(v) => onToggleJoueur(e.id, j.id, v)}
+                          label="Payé"
+                          tone="paye"
+                        />
+                        <TogglePill
+                          checked={j.boisson}
+                          onChange={(v) => toggleBoisson(e.id, j.id, v)}
+                          label="🥤 Boisson"
+                          tone="dark"
+                        />
+                        <button
+                          className="btn-ghost px-3 text-nonpaye disabled:opacity-30"
+                          onClick={() => supprimerJoueur(e.id, j.id)}
+                          disabled={e.joueurs.length <= 1}
+                          aria-label="Retirer le joueur"
                         >
-                          {j.nom}
-                        </span>
-                      </label>
+                          ✕
+                        </button>
+                      </div>
                     ))}
                   </div>
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-bordure pt-3 text-sm">
-                    <div className="text-brume">
+                  <button
+                    className="btn-ghost mt-2 text-sm"
+                    onClick={() => ajouterJoueur(e.id)}
+                  >
+                    + Ajouter un joueur
+                  </button>
+
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-brume pt-3 text-sm">
+                    <div className="text-ardoise">
                       Payé{" "}
-                      <span className="font-semibold text-paye">
+                      <span className="font-medium text-[#1E8E3E]">
                         {formatEuro(montantPaye(eq, tarif))}
                       </span>{" "}
                       · Restant{" "}
-                      <span className="font-semibold text-corail">
+                      <span className="font-medium text-encre">
                         {formatEuro(montantRestant(eq, tarif))}
                       </span>
                     </div>
@@ -548,8 +814,9 @@ function EquipesTab({
           );
         })}
         {filtrees.length === 0 && (
-          <div className="card p-8 text-center text-brume">
-            Aucune équipe {q ? "ne correspond à la recherche" : "inscrite pour l'instant"}.
+          <div className="card p-10 text-center text-ardoise">
+            Aucune équipe{" "}
+            {q ? "ne correspond à la recherche" : "inscrite pour l'instant"}.
           </div>
         )}
       </div>
@@ -562,18 +829,48 @@ function AjoutEquipe({
   onSave,
 }: {
   onCancel: () => void;
-  onSave: (nom: string, joueurs: string[]) => void;
+  onSave: (
+    nom: string,
+    joueurs: string[],
+    contact: { nom: string; prenom: string; tel: string }
+  ) => void;
 }) {
   const [nom, setNom] = useState("");
+  const [cNom, setCNom] = useState("");
+  const [cPrenom, setCPrenom] = useState("");
+  const [cTel, setCTel] = useState("");
   const [joueurs, setJoueurs] = useState<string[]>(["", "", "", ""]);
   const nbRemplis = joueurs.filter((j) => j.trim()).length;
-  const ok = nom.trim() && nbRemplis >= 4;
+  const ok = nom.trim() !== "" && nbRemplis >= 4;
   return (
     <div className="card mb-4 p-5">
       <div className="mb-3">
         <label className="label">Nom de l&apos;équipe</label>
         <input className="input" value={nom} onChange={(e) => setNom(e.target.value)} />
       </div>
+      <label className="label">Contact référent (optionnel)</label>
+      <div className="mb-3 grid gap-2 sm:grid-cols-3">
+        <input
+          className="input"
+          placeholder="Prénom"
+          value={cPrenom}
+          onChange={(e) => setCPrenom(e.target.value)}
+        />
+        <input
+          className="input"
+          placeholder="Nom"
+          value={cNom}
+          onChange={(e) => setCNom(e.target.value)}
+        />
+        <input
+          className="input"
+          type="tel"
+          placeholder="Téléphone"
+          value={cTel}
+          onChange={(e) => setCTel(e.target.value)}
+        />
+      </div>
+      <label className="label">Joueurs</label>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {joueurs.map((j, i) => (
           <input
@@ -604,7 +901,11 @@ function AjoutEquipe({
           className="btn-primary"
           disabled={!ok}
           onClick={() =>
-            onSave(nom.trim(), joueurs.map((j) => j.trim()).filter(Boolean))
+            onSave(
+              nom.trim(),
+              joueurs.map((j) => j.trim()).filter(Boolean),
+              { nom: cNom.trim(), prenom: cPrenom.trim(), tel: cTel.trim() }
+            )
           }
         >
           Ajouter
@@ -614,8 +915,41 @@ function AjoutEquipe({
   );
 }
 
+function TogglePill({
+  checked,
+  onChange,
+  label,
+  tone,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  tone: "paye" | "dark";
+}) {
+  const on =
+    tone === "paye"
+      ? "border-paye/50 bg-paye/10 text-[#1E8E3E]"
+      : "border-encre bg-nuage text-encre";
+  const off = "border-ligne bg-blanc text-ardoise hover:bg-nuage";
+  return (
+    <label
+      className={`inline-flex cursor-pointer select-none items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-medium transition ${
+        checked ? on : off
+      }`}
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="h-3.5 w-3.5"
+      />
+      {label}
+    </label>
+  );
+}
+
 /* ============================================================
- *  Finances
+ *  Finances (logique inchangée — reskin uniquement)
  * ============================================================ */
 function FinancesTab({
   tournoi,
@@ -672,7 +1006,7 @@ function FinancesTab({
     <div className="print-area space-y-5">
       {/* RECETTES */}
       <section className="card p-5">
-        <h3 className="mb-4 font-display text-lg font-600 text-lagon">Recettes</h3>
+        <h3 className="display mb-4 text-lg font-semibold text-encre">Recettes</h3>
         <LigneBilan
           label="Rentrée inscriptions"
           hint="joueurs payés × tarif (auto)"
@@ -685,9 +1019,9 @@ function FinancesTab({
             onCommit={(v) => onBuvette("rentree_buvette", v)}
           />
         </div>
-        <div className="mt-4 flex items-center justify-between border-t border-bordure pt-3">
-          <span className="font-semibold text-ecume">Total recettes</span>
-          <span className="font-display text-lg font-700 text-paye">
+        <div className="mt-4 flex items-center justify-between border-t border-brume pt-3">
+          <span className="font-medium text-encre">Total recettes</span>
+          <span className="display text-lg font-semibold text-encre">
             {formatEuro(finances.totalRecettes)}
           </span>
         </div>
@@ -695,7 +1029,7 @@ function FinancesTab({
 
       {/* DÉPENSES */}
       <section className="card p-5">
-        <h3 className="mb-4 font-display text-lg font-600 text-corail">Dépenses</h3>
+        <h3 className="display mb-4 text-lg font-semibold text-encre">Dépenses</h3>
 
         <div className="mb-4 flex items-center justify-between gap-3">
           <label className="label mb-0">Dépense buvette</label>
@@ -705,7 +1039,6 @@ function FinancesTab({
           />
         </div>
 
-        {/* Achats divers */}
         <TableauLignes
           titre="Achats divers"
           lignes={achats}
@@ -716,7 +1049,6 @@ function FinancesTab({
           labelAjout="+ Ajouter une dépense"
         />
 
-        {/* Frais association */}
         <div className="mt-6">
           <TableauLignes
             titre="Frais association"
@@ -730,32 +1062,24 @@ function FinancesTab({
           />
         </div>
 
-        <div className="mt-4 flex items-center justify-between border-t border-bordure pt-3">
-          <span className="font-semibold text-ecume">Total dépenses</span>
-          <span className="font-display text-lg font-700 text-corail">
+        <div className="mt-4 flex items-center justify-between border-t border-brume pt-3">
+          <span className="font-medium text-encre">Total dépenses</span>
+          <span className="display text-lg font-semibold text-encre">
             {formatEuro(finances.totalDepenses)}
           </span>
         </div>
       </section>
 
       {/* BÉNÉFICE */}
-      <section
-        className={`card p-6 ${
-          finances.beneficeNet >= 0 ? "ring-1 ring-paye/40" : "ring-1 ring-nonpaye/40"
-        }`}
-      >
+      <section className="card p-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm uppercase tracking-wide text-brume">
-              Bénéfice net du tournoi
-            </div>
-            <div className="text-xs text-brume/60">
-              Recettes − Dépenses
-            </div>
+            <div className="text-sm text-ardoise">Bénéfice net du tournoi</div>
+            <div className="text-xs text-ardoise/70">Recettes − Dépenses</div>
           </div>
           <div
-            className={`font-display text-3xl font-700 ${
-              finances.beneficeNet >= 0 ? "text-paye" : "text-nonpaye"
+            className={`display text-3xl font-semibold ${
+              finances.beneficeNet >= 0 ? "text-[#1E8E3E]" : "text-nonpaye"
             }`}
           >
             {formatEuro(finances.beneficeNet)}
@@ -778,10 +1102,10 @@ function LigneBilan({
   return (
     <div className="flex items-center justify-between">
       <div>
-        <div className="text-ecume">{label}</div>
-        {hint && <div className="text-xs text-brume/60">{hint}</div>}
+        <div className="text-encre">{label}</div>
+        {hint && <div className="text-xs text-ardoise/70">{hint}</div>}
       </div>
-      <div className="font-display font-600 text-ecume">{value}</div>
+      <div className="display font-medium text-encre">{value}</div>
     </div>
   );
 }
@@ -805,7 +1129,7 @@ function MoneyInput({
         onBlur={() => onCommit(Number(v) || 0)}
         className="input pr-7 text-right"
       />
-      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-brume">
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ardoise">
         €
       </span>
     </div>
@@ -834,11 +1158,16 @@ function TableauLignes({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <h4 className="text-sm font-semibold uppercase tracking-wide text-brume">
+        <h4 className="text-sm font-medium uppercase tracking-wide text-ardoise">
           {titre}
         </h4>
-        <span className="font-display font-600 text-ecume">{formatEuro(total)}</span>
+        <span className="display font-medium text-encre">{formatEuro(total)}</span>
       </div>
+      {lignes.length === 0 && (
+        <p className="mb-2 text-sm text-ardoise/70">
+          Aucune ligne — ajoutez-en une ci-dessous.
+        </p>
+      )}
       <div className="space-y-2">
         {lignes.map((l) => (
           <div key={l.id} className="flex flex-wrap items-center gap-2">
@@ -864,12 +1193,12 @@ function TableauLignes({
                 defaultValue={l.montant}
                 onBlur={(e) => onUpd(l.id, { montant: Number(e.target.value) || 0 })}
               />
-              <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-brume">
+              <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-ardoise">
                 €
               </span>
             </div>
             <button
-              className="no-print px-2 text-nonpaye hover:opacity-80"
+              className="no-print px-2 text-nonpaye hover:opacity-70"
               onClick={() => onDel(l.id)}
               aria-label="Supprimer la ligne"
             >
